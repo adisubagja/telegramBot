@@ -28,7 +28,7 @@ module.exports = {
                 // đã lấy được json
                 });
             }).on('error', function(e){
-               reject(e);
+               console.log(e);
             });
         })
        
