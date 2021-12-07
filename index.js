@@ -11,7 +11,7 @@ app.get('/', function (req, res) {
   res.send('Developed by Hữu Hiếu')
 })
 console.log("App running port 3000");
-app.listen(3000);
+app.listen(process.env.PORT || 3000);
 AwakeHeroku.add("https://gaixinhbot.herokuapp.com");
 bot.on('message', async msg => {
     const text = msg.text.trim();
