@@ -13,6 +13,7 @@ app.get('/', function (req, res) {
 console.log("App running port 3000");
 app.listen(process.env.PORT || 3000);
 AwakeHeroku.add("https://gaixinhbot.herokuapp.com");
+AwakeHeroku.start();
 bot.on('message', async msg => {
     const text = msg.text.trim();
     const chatId = msg.chat.id;
