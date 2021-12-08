@@ -25,14 +25,14 @@ bot.on('message', async msg => {
             // var result =  result.replace("https://facebook.com/gaixinhchonloc",'');
             // var result =  result.replace("#gaixinhchonloc",'');
             // bot.sendMessage(chatId, result);
-            }
+            // }
            
            
           }).catch(err => {
             bot.sendMessage(chatId, err);
           });
     }
-})
+});
 setInterval(function() {
   http.get("http://gaixinhbot.herokuapp.com");
   console.log("Wakeup Now !!");
