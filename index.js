@@ -18,13 +18,13 @@ bot.on('message', async msg => {
         data.data().then(response => {
             var obj = JSON.parse(response);
             var srcImg = obj['photo-url-1280'];
-            var caption = obj['photo-caption'];
+            // var caption = obj['photo-caption'];
             bot.sendPhoto(chatId, srcImg);
-            if(caption != ""){
-              var result = convert(caption);
-            var result =  result.replace("https://facebook.com/gaixinhchonloc",'');
-            var result =  result.replace("#gaixinhchonloc",'');
-            bot.sendMessage(chatId, result);
+            // if(caption != ""){
+            //   var result = convert(caption);
+            // var result =  result.replace("https://facebook.com/gaixinhchonloc",'');
+            // var result =  result.replace("#gaixinhchonloc",'');
+            // bot.sendMessage(chatId, result);
             }
            
            
