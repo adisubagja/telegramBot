@@ -5,15 +5,12 @@ const token = "5069816784:AAFnugaFaKKHThDZ8m8zQTxRQgieZcKku8U";
 const bot = new TelegramBot(token, {polling: true});
 const { convert } = require('html-to-text');
 var data = require('./modules/gaixinh');
-const { AwakeHeroku } = require("awake-heroku");
 const app = express();
 app.get('/', function (req, res) {
   res.send('Developed by Hữu Hiếu')
 })
 console.log("App running port 3000");
 app.listen(process.env.PORT || 3000);
-AwakeHeroku.add("https://gaixinhbot.herokuapp.com");
-AwakeHeroku.start();
 bot.on('message', async msg => {
     const text = msg.text.trim();
     const chatId = msg.chat.id;
@@ -36,5 +33,8 @@ bot.on('message', async msg => {
           });
     }
 })
-
+setInterval(function() {
+  http.get("http://gaixinhbot.herokuapp.com");
+  console.log("Wakeup Now !!");
+}, 300000); // every 5 minutes (300000)
  
