@@ -5,7 +5,6 @@ module.exports = {
         return new Promise((resovle, reject) => {
             http.get(URL, function (res) {
                 var body = "";
-                var object = [];
                 res.on('data', function (chunk) {
                     body += chunk;
                 });
