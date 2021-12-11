@@ -26,11 +26,11 @@ bot.on('message', async msg => {
   const text = msg.text.trim();
   const chatId = msg.chat.id;
 
-  if (text === "/tudongguithongbaocovid") {
+  if (text.startsWith("/tudongguithongbaocovid")) {
     checkGroup(chatId);
     bot.sendMessage(chatId,"Đã đăng ký nhận thông báo về covid 19!");
   }
-  if (text === "/help") {
+  if (text.startsWith("/help")) {
     console.log(chatId);
     var messageContent = "*Danh sách các lệnhh:\* \n";
     messageContent += "\- \/xinh : Xem ảnh gái xinh đẹp mlem mlem \n";
@@ -40,7 +40,7 @@ bot.on('message', async msg => {
       parse_mode: "Markdown"
     });
   }
-  if (text === "/xinh") {
+  if (text.startsWith("/xinh")) {
 
     data.data().then(response => {
       var obj = JSON.parse(response);
@@ -58,7 +58,7 @@ bot.on('message', async msg => {
       bot.sendMessage(chatId, err);
     });
   }
-  if (text === "/covid") {
+  if (text.startsWith("/covid")) {
     // Write Javascript code here
     covid.covid().then(response => {
       var today = new Date();
@@ -84,13 +84,21 @@ bot.on('message', async msg => {
       bot.sendMessage(chatId, "Lỗi");
     })
   }
-  if (text === "/khen") {
-    var name = msg.from.first_name + " " + msg.from.last_name;
+  if (text.startsWith("/khen")) {
+    var name = msg.from.first_name + " " + msg.from.last_name + " xinh đẹp vl";
+      bot.sendMessage(chatId, name);
+  }
+  if (removeAccents(text).toLowerCase().replace(" ","").includes("quanganh")) {
+    var name =  "Ối dồi ôi làng nước ơi, ai đó vừa nhắc đến mỹ nữ Quang Anh kìa 😮";
+      bot.sendMessage(chatId, name);
+  }
 
-    var message =
+  if (removeAccents(text).toLowerCase().replace(" ","").includes("thai")) {
+    var name =  "Quang Anh yêu Thái 😮";
       bot.sendMessage(chatId, name);
   }
 });
+
 setInterval(function () {
   http.get("http://gaixinhbot.herokuapp.com");
   console.log("Wakeup Now !!");
@@ -147,4 +155,28 @@ function checkGroup(chatId) {
     }
   }
   
+}
+
+function removeAccents(str) {
+  var AccentsMap = [
+    "aàảãáạăằẳẵắặâầẩẫấậ",
+    "AÀẢÃÁẠĂẰẲẴẮẶÂẦẨẪẤẬ",
+    "dđ", "DĐ",
+    "eèẻẽéẹêềểễếệ",
+    "EÈẺẼÉẸÊỀỂỄẾỆ",
+    "iìỉĩíị",
+    "IÌỈĨÍỊ",
+    "oòỏõóọôồổỗốộơờởỡớợ",
+    "OÒỎÕÓỌÔỒỔỖỐỘƠỜỞỠỚỢ",
+    "uùủũúụưừửữứự",
+    "UÙỦŨÚỤƯỪỬỮỨỰ",
+    "yỳỷỹýỵ",
+    "YỲỶỸÝỴ"    
+  ];
+  for (var i=0; i<AccentsMap.length; i++) {
+    var re = new RegExp('[' + AccentsMap[i].substr(1) + ']', 'g');
+    var char = AccentsMap[i][0];
+    str = str.replace(re, char);
+  }
+  return str;
 }
