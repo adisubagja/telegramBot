@@ -25,15 +25,22 @@ app.listen(process.env.PORT || 3000);
 bot.on('message', async msg => {
   const text = msg.text.trim();
   const chatId = msg.chat.id;
-
+  if (text.startsWith("/angi")){
+    var monan = [
+      'bún bò Huế',
+      'cơm',
+      'gì cũng được'
+    ];
+    bot.sendMessage(chatId, "Hôm nay ăn " +monan[~~(Math.random()* monan.length)]);
+  }
   if (text.startsWith("/tudongguithongbaocovid")) {
     checkGroup(chatId);
-    bot.sendMessage(chatId,"Đã đăng ký nhận thông báo về covid 19!");
+    bot.sendMessage(chatId, "Đã đăng ký nhận thông báo về covid 19!");
   }
   if (text.startsWith("/help")) {
-    console.log(chatId);
     var messageContent = "*Danh sách các lệnhh:\* \n";
     messageContent += "\- \/xinh : Xem ảnh gái xinh đẹp mlem mlem \n";
+    messageContent += "\- \/angi : Chọn xem hôm nay sẽ ăn gì \n";
     messageContent += "\- \/covid : Thông tin covid-19 Hà Nội và Việt Nam\n";
     messageContent += "\- \/tudongguithongbaocovid : Đăng ký nhận thông tin covid-19 Hà Nội và Việt Nam\n";
     bot.sendMessage(chatId, messageContent, {
@@ -86,17 +93,17 @@ bot.on('message', async msg => {
   }
   if (text.startsWith("/khen")) {
     var name = msg.from.first_name + " " + msg.from.last_name + " xinh đẹp vl";
-      bot.sendMessage(chatId, name);
+    bot.sendMessage(chatId, name);
   }
-  if (removeAccents(text).toLowerCase().replace(" ","").includes("quanganh")) {
+  if (removeAccents(text).toLowerCase().replace(" ", "").includes("quanganh")) {
     // console.log(removeAccents(text).toLowerCase().replace(" ",""));
-    var name =  "Ối dồi ôi làng nước ơi, ai đó vừa nhắc đến mỹ nữ Quang Anh kìa 😮";
-      bot.sendMessage(chatId, name);
+    var name = "Ối dồi ôi làng nước ơi, ai đó vừa nhắc đến mỹ nữ Quang Anh kìa 😮";
+    bot.sendMessage(chatId, name);
   }
 
-  if (removeAccents(text).toLowerCase().replace(" ","").includes("thai")) {
-    var name =  "Quang Anh yêu Thái 😮";
-      bot.sendMessage(chatId, name);
+  if (removeAccents(text).toLowerCase().replace(" ", "").includes("thai")) {
+    var name = "Quang Anh yêu Thái 😮";
+    bot.sendMessage(chatId, name);
   }
 });
 
@@ -117,9 +124,10 @@ function scheduleSendMessageCovid() {
   // let current = hour*min*second;
   // let x = 14*55*60;
   // let y = 18*60*60;
-  if (hour === 7 && min <= 5 || hour === 19 && min <= 5) {
+  if (hour === 7 && min <= 6 || hour === 19 && min <= 6) {
+    console.log("call function broadcast send msg - time:" + hour +":" + min);
     bot.on('message', async msg => {
-      chat_id.forEach(i => 
+      chat_id.forEach(i =>
         covid.covid().then(response => {
           var today = new Date();
           var date = today.getDate() + '\-' + (today.getMonth() + 1) + '\-' + today.getFullYear();
@@ -134,28 +142,29 @@ function scheduleSendMessageCovid() {
           messageContent += "\- Tử vong: " + arr.canuoc.death + "\n";
           messageContent += "\- Đang điều trị: " + arr.canuoc.treating + "\n";
           messageContent += "\- Phục hồi: " + arr.canuoc.recovered + "\n";
-          console.log(i);
           bot.sendMessage(i, messageContent, {
             parse_mode: "Markdown"
           });
+          console.log("call function broadcast send msg - time:" + hour +":" + min);
         }).catch(err => {
           console.log(err);
           bot.sendMessage(chatId, "Lỗi");
         })
-        );
+      );
 
     })
   }
 
+
 }
 function checkGroup(chatId) {
   console.log(chat_id);
-  if(Array.isArray(chat_id) && !chat_id.length){
+  if (Array.isArray(chat_id) && !chat_id.length) {
     if (chat_id.length <= 0 || !chat_id.includes(chatId)) {
       chat_id.push(chatId);
     }
   }
-  
+
 }
 
 function removeAccents(str) {
@@ -172,9 +181,9 @@ function removeAccents(str) {
     "uùủũúụưừửữứự",
     "UÙỦŨÚỤƯỪỬỮỨỰ",
     "yỳỷỹýỵ",
-    "YỲỶỸÝỴ"    
+    "YỲỶỸÝỴ"
   ];
-  for (var i=0; i<AccentsMap.length; i++) {
+  for (var i = 0; i < AccentsMap.length; i++) {
     var re = new RegExp('[' + AccentsMap[i].substr(1) + ']', 'g');
     var char = AccentsMap[i][0];
     str = str.replace(re, char);
