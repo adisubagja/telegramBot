@@ -5,9 +5,13 @@
   "main": "index.js",
   "dependencies": {
     "awake-heroku": "^2.0.8",
+    "cheerio": "^1.0.0-rc.10",
     "express": "^4.17.1",
+    "fs": "0.0.1-security",
     "html-to-text": "^8.1.0",
-    "node-telegram-bot-api": "^0.54.0"
+    "node-telegram-bot-api": "^0.54.0",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.6"
   },
   "devDependencies": {},
   "scripts": {

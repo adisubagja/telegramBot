@@ -3,9 +3,6 @@ var http = require('http');
 const { resolve } = require('path');
 var url = "http://api.huuhieu.net/gxcl/";
 
-function Data(){
-    
-}
 module.exports = {
     data: () => {
         return new Promise((resolve,reject) => {
