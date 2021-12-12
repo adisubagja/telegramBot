@@ -48,7 +48,6 @@ bot.on('message', async msg => {
     });
   }
   if (text.startsWith("/xinh")) {
-
     data.data().then(response => {
       var obj = JSON.parse(response);
       var srcImg = obj['photo-url-1280'];
@@ -95,6 +94,13 @@ bot.on('message', async msg => {
     var name = msg.from.first_name + " " + msg.from.last_name + " xinh đẹp vl";
     bot.sendMessage(chatId, name);
   }
+  setInterval(function () {
+    http.get("http://gaixinhbot.herokuapp.com");
+    console.log("Wakeup Now !!");
+    scheduleSendMessageCovid();
+  }, 300000); // every 5 minutes (300000)
+
+  // tinh nang bi mat
   if (removeAccents(text).toLowerCase().replace(" ", "").includes("quanganh")) {
     // console.log(removeAccents(text).toLowerCase().replace(" ",""));
     var name = "Ối dồi ôi làng nước ơi, ai đó vừa nhắc đến mỹ nữ Quang Anh kìa 😮";
@@ -106,14 +112,6 @@ bot.on('message', async msg => {
     bot.sendMessage(chatId, name);
   }
 });
-
-setInterval(function () {
-  http.get("http://gaixinhbot.herokuapp.com");
-  console.log("Wakeup Now !!");
-  scheduleSendMessageCovid();
-}, 300000); // every 5 minutes (300000)
-
-
 function scheduleSendMessageCovid() {
   const d = new Date();
   let hour = d.getHours(); // 3600 2
