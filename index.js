@@ -54,7 +54,7 @@ bot.on('message', async msg => {
     bot.sendMessage(chatId, "Hôm nay ăn " +monan[~~(Math.random()* monan.length)]);
   }
   if (text.startsWith("/sexy")){
-    var url = 'https://translate.google.com/translate_tts?ie=UTF-8&q=Thằng đồi truỵ này&tl=en&client=tw-ob';
+    var url = 'https://translate.google.com/translate_tts?ie=UTF-8&q=Thằng đồi truỵ này&tl=vi&client=tw-ob';
     bot.sendAudio(chatId,url);
   }
   if (text.startsWith("/tudongguithongbaocovid")) {
