@@ -6,10 +6,10 @@ const token = "5024645658:AAH8cX8s60kfCXw6s4J2x18DoiveE4XaQL0"; // Bot sự th�
 var chat_id = [];
 
 const bot = new TelegramBot(token, { polling: true });
-// const { convert } = require('html-to-text');
-// const fs = require('fs');
+
 var covid = require('./modules/covid19');
 var data = require('./modules/gaixinh');
+var sim = require('./modules/simsimi');
 const { response } = require('express');
 
 
@@ -26,6 +26,21 @@ setInterval(function () {
   scheduleSendMessageCovid();
 }, 300000); // every 5 minutes (300000)
 
+bot.onText(/\. (.+)/, (msg, match) => {
+  // 'msg' is the received Message from Telegram
+  // 'match' is the result of executing the regexp above on the text content
+  // of the message
+
+  const chatId = msg.chat.id;
+  const resp = match[1]; // the captured "whatever"
+  sim.sim(resp).then(response => {
+    var obj = JSON.parse(response);
+    var msg = obj.success;
+    bot.sendMessage(chatId, msg);
+  });
+  // send back the matched "whatever" to the chat
+  
+}); 
 // Bot listen region
 bot.on('message', async msg => {
   const text = msg.text.trim();
@@ -38,13 +53,13 @@ bot.on('message', async msg => {
     ];
     bot.sendMessage(chatId, "Hôm nay ăn " +monan[~~(Math.random()* monan.length)]);
   }
-  if (text.startsWith("/test")){
-    var url = 'https://translate.google.com/translate_tts?ie=UTF-8&q=hello&tl=en&client=tw-ob';
+  if (text.startsWith("/sexy")){
+    var url = 'https://translate.google.com/translate_tts?ie=UTF-8&q=Thằng đồi truỵ này&tl=en&client=tw-ob';
     bot.sendAudio(chatId,url);
   }
   if (text.startsWith("/tudongguithongbaocovid")) {
     checkGroup(chatId);
-    bot.sendMessage(chatId, "Đã đăng ký nhận thông báo về covid 19!");
+    bot.sendMessage(chatId, "Chức năng đ hoạt động!");
   }
   if (text.startsWith("/help")) {
     var messageContent = "*Danh sách các lệnhh:\* \n";
@@ -99,7 +114,19 @@ bot.on('message', async msg => {
     })
   }
   if (text.startsWith("/khen")) {
-    var name = msg.from.first_name + " " + msg.from.last_name + " xinh đẹp vl";
+    var loikhen = [
+      ' xinh đẹp vcl',
+      ' là 1 con bóng chính hiệu',
+      ' , bạn là tiên nữ giáng trần',
+      ' dễ thương quá, cho nựng cái',
+      ' là người con gái đẹp nhất tôi từng gặp',
+      ' thật mạnh mẽ',
+      ' là con bóng gồng',
+      ' -> chúa tể bê đê',
+      ' gì cũng biết, gì cũng hay',
+      ' là nhất, là số một',
+    ];
+    var name = msg.from.first_name + " " + msg.from.last_name +loikhen[~~(Math.random()* loikhen.length)];
     bot.sendMessage(chatId, name);
   }
 
@@ -120,11 +147,6 @@ function scheduleSendMessageCovid() {
   let hour = d.getHours(); // 3600 2
   let min = d.getMinutes();
   let second = d.getSeconds();
-  // let min5M = 5*60;
-  // // 2 * 48 * 20 + 5 *60
-  // let current = hour*min*second;
-  // let x = 14*55*60;
-  // let y = 18*60*60;
   if (hour === 7 && min <= 6 || hour === 19 && min <= 6) {
     console.log("call function broadcast send msg - time:" + hour +":" + min);
     bot.on('message', async msg => {
