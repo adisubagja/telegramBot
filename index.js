@@ -1,8 +1,8 @@
 const http = require('http');
 const express = require('express')
 const TelegramBot = require('node-telegram-bot-api');
-// const token = "5069816784:AAFRJciLwurvBo0Ikj-NMxhjmDzaGQj31rI";
-const token = "5024645658:AAH8cX8s60kfCXw6s4J2x18DoiveE4XaQL0";
+const token = "5069816784:AAE-m0KgKpYnol3aMfviZ78Z7ezHTGysZEc"; //Gái xinh bot
+// const token = "5024645658:AAH8cX8s60kfCXw6s4J2x18DoiveE4XaQL0"; // Bot sự thật
 var chat_id = [];
 
 const bot = new TelegramBot(token, { polling: true });
@@ -19,7 +19,12 @@ app.get('/', function (req, res) {
 })
 console.log("App running port 3000");
 app.listen(process.env.PORT || 3000);
-
+// wakeup bot
+setInterval(function () {
+  http.get("http://gaixinhbot.herokuapp.com");
+  console.log("Wakeup Now !!");
+  scheduleSendMessageCovid();
+}, 300000); // every 5 minutes (300000)
 
 // Bot listen region
 bot.on('message', async msg => {
@@ -32,6 +37,10 @@ bot.on('message', async msg => {
       'gì cũng được'
     ];
     bot.sendMessage(chatId, "Hôm nay ăn " +monan[~~(Math.random()* monan.length)]);
+  }
+  if (text.startsWith("/test")){
+    var url = 'https://translate.google.com/translate_tts?ie=UTF-8&q=hello&tl=en&client=tw-ob';
+    bot.sendAudio(chatId,url);
   }
   if (text.startsWith("/tudongguithongbaocovid")) {
     checkGroup(chatId);
@@ -80,7 +89,6 @@ bot.on('message', async msg => {
       messageContent += "\- Tử vong: " + arr.canuoc.death + "\n";
       messageContent += "\- Đang điều trị: " + arr.canuoc.treating + "\n";
       messageContent += "\- Phục hồi: " + arr.canuoc.recovered + "\n";
-
       console.log(arr.hanoi);
       bot.sendMessage(chatId, messageContent, {
         parse_mode: "Markdown"
@@ -94,11 +102,6 @@ bot.on('message', async msg => {
     var name = msg.from.first_name + " " + msg.from.last_name + " xinh đẹp vl";
     bot.sendMessage(chatId, name);
   }
-  setInterval(function () {
-    http.get("http://gaixinhbot.herokuapp.com");
-    console.log("Wakeup Now !!");
-    scheduleSendMessageCovid();
-  }, 300000); // every 5 minutes (300000)
 
   // tinh nang bi mat
   if (removeAccents(text).toLowerCase().replace(" ", "").includes("quanganh")) {
