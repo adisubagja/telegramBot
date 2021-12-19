@@ -3,7 +3,9 @@ const express = require('express')
 const TelegramBot = require('node-telegram-bot-api');
 // const token = "5069816784:AAE-m0KgKpYnol3aMfviZ78Z7ezHTGysZEc"; //Gái xinh bot
 const token = "5024645658:AAH8cX8s60kfCXw6s4J2x18DoiveE4XaQL0"; // Bot sự thật
-var chat_id = [];
+var chat_id = [
+  "-548545018"
+];
 
 const bot = new TelegramBot(token, { polling: true });
 
@@ -104,7 +106,6 @@ bot.on('message', async msg => {
       messageContent += "\- Tử vong: " + arr.canuoc.death + "\n";
       messageContent += "\- Đang điều trị: " + arr.canuoc.treating + "\n";
       messageContent += "\- Phục hồi: " + arr.canuoc.recovered + "\n";
-      console.log(arr.hanoi);
       bot.sendMessage(chatId, messageContent, {
         parse_mode: "Markdown"
       });
