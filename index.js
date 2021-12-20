@@ -4,7 +4,6 @@ const TelegramBot = require('node-telegram-bot-api');
 // const token = "5069816784:AAE-m0KgKpYnol3aMfviZ78Z7ezHTGysZEc"; //Gái xinh bot
 const token = "5024645658:AAH8cX8s60kfCXw6s4J2x18DoiveE4XaQL0"; // Bot sự thật
 var chat_id = [
-  "-548545018"
 ];
 
 const bot = new TelegramBot(token, { polling: true });
