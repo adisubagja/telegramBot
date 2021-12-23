@@ -20,13 +20,12 @@ const app = express();
 app.get('/', function (req, res) {
   res.send('Developed by Hữu Hiếu')
 })
-console.log("App running port 3000");
+console.log("App này đang chạy port 3000");
 app.listen(process.env.PORT || 3000);
 // wakeup bot
 setInterval(function () {
   http.get("http://gaixinhbot.herokuapp.com");
-  console.log("Wakeup Now !!");
-  scheduleSendMessageCovid();
+  console.log("Wakeup Heroku-Chan !!");
 }, 300000); // every 5 minutes (300000)
 
 bot.onText(/\. (.+)/, (msg, match) => {
@@ -161,9 +160,12 @@ bot.on('message', async msg => {
     bot.sendMessage(chatId, name);
   }
 });
-  var s = schedule.scheduleJob({hour: 19, minute: 00},function(){
+var rule = new schedule.RecurrenceRule();
+rule.hour = [07, 19];
+rule.minute = 0;
+  var s = schedule.scheduleJob(rule,function(){
     var today = new Date();
-    var date = today.getDate() + '\-' + (today.getMonth() + 1) + '\-' + today.getFullYear();
+    // var date = today.getDate() + '\-' + (today.getMonth() + 1) + '\-' + today.getFullYear();
     bot.on('message', async msg => {
       chat_id.forEach(i =>
         covid.covid().then(response => {
