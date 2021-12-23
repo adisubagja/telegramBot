@@ -183,7 +183,7 @@ bot.on('message', async msg => {
           bot.sendMessage(i, messageContent, {
             parse_mode: "Markdown"
           });
-          console.log("call function broadcast send msg - time:" + hour +":" + min);
+      
         }).catch(err => {
           console.log(err);
           bot.sendMessage(chatId, "Lỗi");
