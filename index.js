@@ -3,7 +3,9 @@ const express = require('express')
 const TelegramBot = require('node-telegram-bot-api');
 // const token = "5069816784:AAE-m0KgKpYnol3aMfviZ78Z7ezHTGysZEc"; //Gái xinh bot
 const token = "5024645658:AAH8cX8s60kfCXw6s4J2x18DoiveE4XaQL0"; // Bot sự thật
+var schedule = require('node-schedule'); // schedule
 var chat_id = [
+  "-548545018"
 ];
 
 const bot = new TelegramBot(token, { polling: true });
@@ -159,13 +161,9 @@ bot.on('message', async msg => {
     bot.sendMessage(chatId, name);
   }
 });
-function scheduleSendMessageCovid() {
-  const d = new Date();
-  let hour = d.getHours(); // 3600 2
-  let min = d.getMinutes();
-  let second = d.getSeconds();
-  if (hour === 7 && min <= 6 || hour === 19 && min <= 6) {
-    console.log("call function broadcast send msg - time:" + hour +":" + min);
+  var s = schedule.scheduleJob({hour: 19, minute: 00},function(){
+    var today = new Date();
+    var date = today.getDate() + '\-' + (today.getMonth() + 1) + '\-' + today.getFullYear();
     bot.on('message', async msg => {
       chat_id.forEach(i =>
         covid.covid().then(response => {
@@ -193,10 +191,7 @@ function scheduleSendMessageCovid() {
       );
 
     })
-  }
-
-
-}
+  })
 function checkGroup(chatId) {
   console.log(chat_id);
   if (Array.isArray(chat_id) && !chat_id.length) {
