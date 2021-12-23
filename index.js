@@ -42,6 +42,23 @@ bot.onText(/\. (.+)/, (msg, match) => {
   // send back the matched "whatever" to the chat
   
 }); 
+bot.onText(/\, (.+)/, (msg, match) => {
+  // 'msg' is the received Message from Telegram
+  // 'match' is the result of executing the regexp above on the text content
+  // of the message
+
+  const chatId = msg.chat.id;
+  const resp = match[1]; // the captured "whatever"
+  sim.sim(resp).then(response => {
+    var obj = JSON.parse(response);
+    var msg = obj.success;
+    // bot.sendMessage(chatId, msg);
+    var url = 'https://translate.google.com/translate_tts?ie=UTF-8&q='+msg+'&tl=vi&client=tw-ob';
+    bot.sendAudio(chatId,url);
+  });
+  // send back the matched "whatever" to the chat
+  
+}); 
 // Bot listen region
 bot.on('message', async msg => {
   const text = msg.text.trim();
