@@ -2,11 +2,11 @@ const http = require('http');
 const express = require('express')
 const TelegramBot = require('node-telegram-bot-api');
 // const token = "5069816784:AAE-m0KgKpYnol3aMfviZ78Z7ezHTGysZEc"; //Gái xinh bot
-const token = "5024645658:AAH8cX8s60kfCXw6s4J2x18DoiveE4XaQL0"; // Bot sự thật
+const token = "5024645658:AAGQTyGtxQpxC_axj3FWkTr9ePrjqztRsNc"; // Bot sự thật
 var schedule = require('node-schedule'); // schedule
 var chat_id = [
 ];
-
+const db = require('./asset/db');
 const bot = new TelegramBot(token, { polling: true });
 
 var covid = require('./modules/covid19');
@@ -19,6 +19,8 @@ const app = express();
 app.get('/', function (req, res) {
   res.send('Developed by Hữu Hiếu')
 })
+app.get('/list-group',db.getListGroup);
+app.post('/add-group',db.addGroup);
 console.log("App này đang chạy port 3000");
 app.listen(process.env.PORT || 3000);
 // wakeup bot
