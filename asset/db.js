@@ -2,7 +2,7 @@
 const { response } = require('express');
 const { Pool } = require('pg');
 const request = require('request');
-const config = require('/config');
+const config = require('./config');
 const pool = new Pool(config.db);
 
 const getListGroup = (request,response) =>{
