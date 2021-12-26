@@ -1,21 +1,21 @@
 const http = require('http');
-const express = require('express')
+const env = process.env;
+
+const express = require('express');
 const TelegramBot = require('node-telegram-bot-api');
-// const token = "5069816784:AAE-m0KgKpYnol3aMfviZ78Z7ezHTGysZEc"; //Gái xinh bot
-const token = "5024645658:AAGQTyGtxQpxC_axj3FWkTr9ePrjqztRsNc"; // Bot sự thật
+const token = env.TELEGRAM_TOKEN || "token"; // Bot sự thật
 var schedule = require('node-schedule'); // schedule
+const { response } = require('express');
 var chat_id = [
 ];
-const db = require('./asset/db');
 const bot = new TelegramBot(token, { polling: true });
-
+const db = require('./asset/db');
+const app = express();
+// module
 var covid = require('./modules/covid19');
 var data = require('./modules/gaixinh');
 var sim = require('./modules/simsimi');
-const { response } = require('express');
 
-
-const app = express();
 app.get('/', function (req, res) {
   res.send('Developed by Hữu Hiếu')
 })
