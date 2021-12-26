@@ -3,7 +3,7 @@ const { response } = require('express');
 const { Pool } = require('pg');
 const request = require('request');
 const config = require('./config');
-const pool = new Pool();
+const pool = new Pool(config);
 
 const getListGroup = (request,response) =>{
   pool.query('Select * from groups',(error,results) => {
