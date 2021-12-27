@@ -11,16 +11,24 @@ var chat_id = [
 const bot = new TelegramBot(token, { polling: true });
 const db = require('./asset/db');
 const app = express();
+const bodyParser = require('body-parser');
 // module
 var covid = require('./modules/covid19');
 var data = require('./modules/gaixinh');
 var sim = require('./modules/simsimi');
 
+app.use(bodyParser.json())
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+)
 app.get('/', function (req, res) {
   res.send('Developed by Hữu Hiếu')
 })
 app.get('/list-group',db.getListGroup);
 app.post('/add-group',db.addGroup);
+
 console.log("App này đang chạy port 3000");
 app.listen(process.env.PORT || 3000);
 // wakeup bot
