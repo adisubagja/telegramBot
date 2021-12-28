@@ -8,16 +8,15 @@ const TelegramBot = require('node-telegram-bot-api');
 const token = env.TELEGRAM_TOKEN || "token"; // Bot sự thật
 var schedule = require('node-schedule'); // schedule
 const { response } = require('express');
-var chat_id = [
-];
 const bot = new TelegramBot(token, { polling: true });
 const db = require('./asset/db');
 const app = express();
 const bodyParser = require('body-parser');
 // module
-var covid = require('./modules/covid19');
-var data = require('./modules/gaixinh');
-var sim = require('./modules/simsimi');
+const covid = require('./modules/covid19');
+const data = require('./modules/gaixinh');
+const sim = require('./modules/simsimi');
+const addGroup = require('./modules/addGroup');
 
 app.use(bodyParser.json())
 app.use(
@@ -30,7 +29,6 @@ app.get('/', function (req, res) {
 })
 app.get('/list-group',db.getListGroup);
 app.post('/add-group',db.addGroup);
-
 console.log("App này đang chạy port 3000");
 app.listen(process.env.PORT || 3000);
 // wakeup bot
@@ -88,8 +86,8 @@ bot.on('message', async msg => {
     bot.sendAudio(chatId,url);
   }
   if (text.startsWith("/tudongguithongbaocovid")) {
-    checkGroup(chatId);
-    bot.sendMessage(chatId, "Chức năng đ hoạt động!");
+    addGroup.addGroup(chatId);
+    bot.sendMessage(chatId, "Đã đăng ký!");
   }
   if (text.startsWith("/help")) {
     var messageContent = "*Danh sách các lệnhh:\* \n";
@@ -205,15 +203,6 @@ rule.minute = 0;
 
     })
   })
-function checkGroup(chatId) {
-  console.log(chat_id);
-  if (Array.isArray(chat_id) && !chat_id.length) {
-    if (chat_id.length <= 0 || !chat_id.includes(chatId)) {
-      chat_id.push(chatId);
-    }
-  }
-
-}
 
 function removeAccents(str) {
   var AccentsMap = [

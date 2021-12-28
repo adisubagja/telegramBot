@@ -16,7 +16,7 @@ const getListGroup = (request,response) =>{
 
 const addGroup = (request,response) => {
   const {groupId} = request.body;
-  pool.query = ('Insert into groups (group) values ($1)',[groupId], (error,results) => {
+  pool.query = ('INSERT INTO groups (groupId) VALUES ($1) ON CONFLICT (groupId) DO UPDATE SET groupId = excluded.groupId, id = excluded.id',[groupId], (error,results) => {
     if(error){
       throw error;
     }
