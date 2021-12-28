@@ -28,13 +28,7 @@ app.get('/', function (req, res) {
   res.send('Developed by Hữu Hiếu')
 })
 app.get('/list-group',db.getListGroup);
-app.post('/add-group',async function(req, res) {
-  try {
-    res.status(200).json(await db.addGroup(req.body));
-  } catch (err) {
-    console.error(`Error while posting quotes `, err.message);
-  }
-});
+app.post('/add-group',db.addGroup);
 console.log("App này đang chạy port 3000");
 app.listen(process.env.PORT || 3000);
 // wakeup bot
@@ -93,7 +87,7 @@ bot.on('message', async msg => {
   }
   if (text.startsWith("/tudongguithongbaocovid")) {
     addGroup.addGroup(chatId).then(response =>{
-      bot.sendMessage(chatId, response);
+      bot.sendMessage(chatId, "Đã đăng ký!");
     });
    
   }
