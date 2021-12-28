@@ -1,10 +1,16 @@
+require('dotenv').config();
+const env = process.env;
 var axios = require('axios');
 module.exports = {
+    
     addGroup: (groupId) => {
-        axios.post('/',{groupId: groupId}).then(res => {
-            return res;
-        }).catch(error => {
-            return error;
-        });
+        return new Promise((resolve,reject)=>{
+            axios.post(process.env.APP_URL+'/add-group',{groupId: groupId}).then(res => {
+                resolve(res) ;
+            }).catch(error => {
+                console.error (error);
+            });
+        })
+       
     }
 }
