@@ -28,7 +28,13 @@ app.get('/', function (req, res) {
   res.send('Developed by Hữu Hiếu')
 })
 app.get('/list-group',db.getListGroup);
-app.post('/add-group',db.addGroup);
+app.post('/add-group',async function(req, res) {
+  try {
+    res.status(200).json(await db.addGroup(req.body));
+  } catch (err) {
+    console.error(`Error while posting quotes `, err.message);
+  }
+});
 console.log("App này đang chạy port 3000");
 app.listen(process.env.PORT || 3000);
 // wakeup bot
