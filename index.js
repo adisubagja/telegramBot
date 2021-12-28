@@ -17,7 +17,7 @@ const covid = require('./modules/covid19');
 const data = require('./modules/gaixinh');
 const sim = require('./modules/simsimi');
 const addGroup = require('./modules/addGroup');
-
+const getListGroup = require('./modules/getAllGroup');
 app.use(bodyParser.json())
 app.use(
   bodyParser.urlencoded({
@@ -157,6 +157,7 @@ bot.on('message', async msg => {
     bot.sendMessage(chatId, name);
   }
 
+
   // tinh nang bi mat
   if (removeAccents(text).toLowerCase().replace(" ", "").includes("quanganh")) {
     // console.log(removeAccents(text).toLowerCase().replace(" ",""));
@@ -170,38 +171,39 @@ bot.on('message', async msg => {
   }
 });
 var rule = new schedule.RecurrenceRule();
-rule.hour = [07, 19];
-rule.minute = 0;
-  var s = schedule.scheduleJob(rule,function(){
+rule.hour = 2;
+rule.minute = 31;
+  schedule.scheduleJob(rule,function(){
     var today = new Date();
+    console.log("sendMessage");
     // var date = today.getDate() + '\-' + (today.getMonth() + 1) + '\-' + today.getFullYear();
-    bot.on('message', async msg => {
-      chat_id.forEach(i =>
-        covid.covid().then(response => {
-          var today = new Date();
-          var date = today.getDate() + '\-' + (today.getMonth() + 1) + '\-' + today.getFullYear();
-          var arr = response;
-          var messageContent = "*Thông tin covid 19 (" + date + ")\* \n";
-          messageContent += "Hà Nội: \n";
-          messageContent += "\- Số ca hôm nay: " + arr.hanoi.casesToday + "\n";
-          messageContent += "\- Tổng số ca: " + arr.hanoi.cases + "\n";
-          messageContent += "\- Tử vong: " + arr.hanoi.death + "\n";
-          messageContent += "Cả nước: \n";
-          messageContent += "\- Tổng số ca: " + arr.canuoc.cases + "\n";
-          messageContent += "\- Tử vong: " + arr.canuoc.death + "\n";
-          messageContent += "\- Đang điều trị: " + arr.canuoc.treating + "\n";
-          messageContent += "\- Phục hồi: " + arr.canuoc.recovered + "\n";
-          bot.sendMessage(i, messageContent, {
-            parse_mode: "Markdown"
-          });
-      
-        }).catch(err => {
-          console.log(err);
-          bot.sendMessage(chatId, "Lỗi");
-        })
-      );
-
-    })
+      getListGroup.getListGroup().then(response => {
+        var obj = JSON.parse(response);
+        obj.forEach(function(item,index){
+          covid.covid().then(response => {
+            var today = new Date();
+            var date = today.getDate() + '\-' + (today.getMonth() + 1) + '\-' + today.getFullYear();
+            var arr = response;
+            var messageContent = "*Thông tin covid 19 (" + date + ")\* \n";
+            messageContent += "Hà Nội: \n";
+            messageContent += "\- Số ca hôm nay: " + arr.hanoi.casesToday + "\n";
+            messageContent += "\- Tổng số ca: " + arr.hanoi.cases + "\n";
+            messageContent += "\- Tử vong: " + arr.hanoi.death + "\n";
+            messageContent += "Cả nước: \n";
+            messageContent += "\- Tổng số ca: " + arr.canuoc.cases + "\n";
+            messageContent += "\- Tử vong: " + arr.canuoc.death + "\n";
+            messageContent += "\- Đang điều trị: " + arr.canuoc.treating + "\n";
+            messageContent += "\- Phục hồi: " + arr.canuoc.recovered + "\n";
+            bot.sendMessage(item.groupid, messageContent, {
+              parse_mode: "Markdown"
+            });
+        
+          }).catch(err => {
+            console.log(err);
+            bot.sendMessage(item.groupid, "Lỗi");
+          })
+        });
+      })
   })
 
 function removeAccents(str) {
