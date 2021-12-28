@@ -19,8 +19,11 @@ const addGroup = (request,response) => {
   pool.query = ('INSERT INTO groups (groupId) VALUES ($1) ON CONFLICT (groupId) DO UPDATE SET groupId = excluded.groupId, id = excluded.id',[groupId], (error,results) => {
     if(error){
       throw error;
+      console.log(error);
     }
-    response.status(201).send(`Đã thêm group id vào csdl`)
+    response.status(201).send(`Đã thêm group id vào csdl`);
+    console.log("Đã thêm group id vào csdl");
+
   })
 }
 
