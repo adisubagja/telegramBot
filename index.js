@@ -1,4 +1,6 @@
+require('dotenv').config();
 const http = require('http');
+
 const env = process.env;
 
 const express = require('express');

@@ -1,8 +1,7 @@
+require('dotenv').config();
 const env = process.env;
 const config = {
         connectionString:env.DATABASE_URL ,
-        ssl: {    /* <----- Add SSL option */
-          rejectUnauthorized: false,
-        }, 
+        ssl: process.env.DATABASE_URL ? true : false
 }
 module.exports = config;
