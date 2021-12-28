@@ -171,12 +171,13 @@ bot.on('message', async msg => {
   }
 });
 var rule = new schedule.RecurrenceRule();
-rule.hour = 2;
-rule.minute = 31;
+rule.hour = [12,24];
+rule.minute = 00;
   schedule.scheduleJob(rule,function(){
     var today = new Date();
     console.log("sendMessage");
     // var date = today.getDate() + '\-' + (today.getMonth() + 1) + '\-' + today.getFullYear();
+
       getListGroup.getListGroup().then(response => {
         var obj = JSON.parse(response);
         obj.forEach(function(item,index){
