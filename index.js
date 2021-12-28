@@ -86,10 +86,8 @@ bot.on('message', async msg => {
     bot.sendAudio(chatId,url);
   }
   if (text.startsWith("/tudongguithongbaocovid")) {
-    addGroup.addGroup(chatId).then(response =>{
-      bot.sendMessage(chatId, "Đã đăng ký!");
-    });
-   
+    addGroup.addGroup(chatId);
+    bot.sendMessage(chatId, "Đã đăng ký!");
   }
   if (text.startsWith("/help")) {
     var messageContent = "*Danh sách các lệnhh:\* \n";

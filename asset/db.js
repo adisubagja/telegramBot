@@ -9,22 +9,24 @@ const getListGroup = (request,response) =>{
   pool.query('Select * from groups',(error,results) => {
     if  (error){
       throw error
+      response.status(200).json(error);
     }
     response.status(200).json(results.rows);
   });
 }
 
 const addGroup = (request,response) => {
-  const {groupId} = request.body;
-  pool.query = ('INSERT INTO groups (groupId) VALUES ($1) ON CONFLICT (groupId) DO UPDATE SET groupId = excluded.groupId, id = excluded.id',[groupId], (error,results) => {
+
+  const groupId = request.body.groupId;
+  console.log(groupId);
+  pool.query('INSERT INTO groups (groupId) VALUES ($1) ON CONFLICT (groupId) DO UPDATE SET groupId = excluded.groupId, id = excluded.id',[groupId], (error,results) => {
     if(error){
       throw error;
-      console.log(error);
     }
     response.status(201).send(`Đã thêm group id vào csdl`);
-    console.log("Đã thêm group id vào csdl");
-
+   
   })
+  pool.end;
 }
 
 module.exports = {

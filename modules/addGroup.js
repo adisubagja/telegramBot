@@ -21,7 +21,6 @@ module.exports = {
               }
               
               const req = https.request(options, res => {
-                console.log(`response: ${res}`)
                 res.on('data', d => {
                   process.stdout.write(d)
                 })
