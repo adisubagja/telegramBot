@@ -2,7 +2,7 @@ require('dotenv').config();
 const http = require('http');
 
 const env = process.env;
-
+var CronJob = require('cron').CronJob;
 const express = require('express');
 const TelegramBot = require('node-telegram-bot-api');
 const token = env.TELEGRAM_TOKEN || "token"; // Bot sự thật
@@ -170,14 +170,13 @@ bot.on('message', async msg => {
     bot.sendMessage(chatId, name);
   }
 });
-var rule = new schedule.RecurrenceRule();
-rule.hour = [12,24];
-rule.minute = 00;
-  schedule.scheduleJob(rule,function(){
+
+var job = new CronJob(
+	'00 06 07,21 * * *',
+	function() {
     var today = new Date();
     console.log("sendMessage");
-    // var date = today.getDate() + '\-' + (today.getMonth() + 1) + '\-' + today.getFullYear();
-
+    var date = today.getDate() + '\-' + (today.getMonth() + 1) + '\-' + today.getFullYear();
       getListGroup.getListGroup().then(response => {
         var obj = JSON.parse(response);
         obj.forEach(function(item,index){
@@ -205,8 +204,12 @@ rule.minute = 00;
           })
         });
       })
-  })
-
+	},
+	null,
+	true,
+	'Asia/Ho_Chi_Minh'
+);
+    
 function removeAccents(str) {
   var AccentsMap = [
     "aàảãáạăằẳẵắặâầẩẫấậ",
