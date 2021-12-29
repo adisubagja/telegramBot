@@ -172,7 +172,7 @@ bot.on('message', async msg => {
 });
 
 var job = new CronJob(
-	'00 06 07,21 * * *',
+	'00 00 07,19 * * *',
 	function() {
     var today = new Date();
     console.log("sendMessage");
