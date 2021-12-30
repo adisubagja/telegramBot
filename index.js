@@ -209,6 +209,7 @@ var job = new CronJob(
 	true,
 	'Asia/Ho_Chi_Minh'
 );
+job.start();
     
 function removeAccents(str) {
   var AccentsMap = [
