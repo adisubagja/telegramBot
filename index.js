@@ -5,9 +5,7 @@ const env = process.env;
 var CronJob = require('cron').CronJob;
 const express = require('express');
 const TelegramBot = require('node-telegram-bot-api');
-const token = env.TELEGRAM_TOKEN || "token"; // Bot sự thật
-var schedule = require('node-schedule'); // schedule
-const { response } = require('express');
+const token = env.TELEGRAM_TOKEN || "token";
 const bot = new TelegramBot(token, { polling: true });
 const db = require('./asset/db');
 const app = express();
@@ -18,6 +16,7 @@ const data = require('./modules/gaixinh');
 const sim = require('./modules/simsimi');
 const addGroup = require('./modules/addGroup');
 const getListGroup = require('./modules/getAllGroup');
+const getTikTok = require('./modules/tiktok');
 app.use(bodyParser.json())
 app.use(
   bodyParser.urlencoded({
@@ -34,7 +33,6 @@ app.listen(process.env.PORT || 3000);
 // wakeup bot
 setInterval(function () {
   http.get("http://gaixinhbot.herokuapp.com");
-  console.log("Wakeup Heroku-Chan !!");
 }, 3000); // every 5 minutes (300000)
 
 bot.onText(/\. (.+)/, (msg, match) => {
@@ -157,7 +155,27 @@ bot.on('message', async msg => {
     bot.sendMessage(chatId, name);
   }
 
-
+  bot.onText(/tiktok.com/, (msg, match) => {
+    // 'msg' is the received Message from Telegram
+    // 'match' is the result of executing the regexp above on the text content
+    // of the message
+    const chatId = msg.chat.id;
+    const resp = match.input; // the captured "whatever"
+    // console.log(resp);
+    bot.sendMessage(chatId, "Đợi Xíu =))");
+    getTikTok.getTikTok(resp).then(response => {
+      var data = response.data.hdplay;
+      // console.log();
+      bot.sendMessage(chatId, response.data.title);
+      bot.sendVideo(chatId,data);
+      
+    }).catch(err => {
+      console.log(err);
+      bot.sendMessage(chatId, "Đợi Xíu =))");
+      // var url = ;
+    })
+  
+  })
   // tinh nang bi mat
   if (removeAccents(text).toLowerCase().replace(" ", "").includes("quanganh")) {
     // console.log(removeAccents(text).toLowerCase().replace(" ",""));
