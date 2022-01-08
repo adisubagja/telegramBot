@@ -11,16 +11,14 @@ const db = require('../asset/db');
 const covid = require('../modules/covid19');
 const getListGroup = require('../modules/getAllGroup');
 
-var job = new CronJob(
-	'00 10 07,19 * * *',
-	function() {
-    var today = new Date();
-    console.log("sendMessage");
-    var date = today.getDate() + '\-' + (today.getMonth() + 1) + '\-' + today.getFullYear();
-      getListGroup.getListGroup().then(response => {
-        var obj = JSON.parse(response);
-        obj.forEach(function(item,index){
-          covid.covid().then(response => {
+
+var today = new Date();
+console.log("sendMessage");
+var date = today.getDate() + '\-' + (today.getMonth() + 1) + '\-' + today.getFullYear();
+getListGroup.getListGroup().then(response => {
+    var obj = JSON.parse(response);
+    obj.forEach(function (item, index) {
+        covid.covid().then(response => {
             var today = new Date();
             var date = today.getDate() + '\-' + (today.getMonth() + 1) + '\-' + today.getFullYear();
             var arr = response;
@@ -35,18 +33,12 @@ var job = new CronJob(
             messageContent += "\- Đang điều trị: " + arr.canuoc.treating + "\n";
             messageContent += "\- Phục hồi: " + arr.canuoc.recovered + "\n";
             bot.sendMessage(item.groupid, messageContent, {
-              parse_mode: "Markdown"
+                parse_mode: "Markdown"
             });
-        
-          }).catch(err => {
+
+        }).catch(err => {
             console.log(err);
             bot.sendMessage(item.groupid, "Lỗi");
-          })
-        });
-      })
-	},
-	null,
-	true,
-	'Asia/Ho_Chi_Minh'
-);
-job.start();
+        })
+    });
+})
