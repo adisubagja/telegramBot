@@ -42,6 +42,13 @@ bot.onText(/\. (.+)/, (msg, match) => {
 
   const chatId = msg.chat.id;
   const resp = match[1]; // the captured "whatever"
+  console.log("Username:" + msg.from.username + "\n");
+  console.log("Fullname:" + msg.from.first_name + " " + msg.from.last_name + "\n");
+  console.log("Text:" + msg.text + "\n");
+  if(msg.chat.type === 'supergroup'){
+    console.log("Group Id:" + msg.chat.id + "\n");
+    console.log("Group Name:" + msg.chat.title + "\n");
+  }
   sim.sim(resp).then(response => {
     var obj = JSON.parse(response);
     var msg = obj.success;
@@ -57,6 +64,13 @@ bot.onText(/\, (.+)/, (msg, match) => {
 
   const chatId = msg.chat.id;
   const resp = match[1]; // the captured "whatever"
+  console.log("Username:" + msg.from.username + "\n");
+  console.log("Fullname:" + msg.from.first_name + " " + msg.from.last_name + "\n");
+  console.log("Text:" + msg.text + "\n");
+  if(msg.chat.type === 'supergroup'){
+    console.log("Group Id:" + msg.chat.id + "\n");
+    console.log("Group Name:" + msg.chat.title + "\n");
+  }
   sim.sim(resp).then(response => {
     var obj = JSON.parse(response);
     var msg = obj.success;
@@ -67,10 +81,49 @@ bot.onText(/\, (.+)/, (msg, match) => {
   // send back the matched "whatever" to the chat
   
 }); 
+bot.onText(/tiktok.com/, (msg, match) => {
+  // 'msg' is the received Message from Telegram
+  // 'match' is the result of executing the regexp above on the text content
+  // of the message
+  const chatId = msg.chat.id;
+  const resp = msg.text; // the captured "whatever"
+  console.log("Username:" + msg.from.username + "\n");
+  console.log("Fullname:" + msg.from.first_name + " " + msg.from.last_name + "\n");
+  console.log("Text:" + msg.text + "\n");
+  if(msg.chat.type === 'supergroup'){
+    console.log("Group Id:" + msg.chat.id + "\n");
+    console.log("Group Name:" + msg.chat.title + "\n");
+  }
+  bot.sendMessage(chatId, "Đợi Xíu =))");
+  getTikTok.getData(resp).then(response => {
+    var data;
+    if (response.data.hdplay != null){
+      data = response.data.hdplay;
+    }else{
+      data = response.data.wmplay;
+    }
+    // console.log();
+    bot.sendMessage(chatId, response.data.title);
+    bot.sendVideo(chatId,data);
+    
+  }).catch(err => {
+    console.log(err);
+    bot.sendMessage(chatId, "Lỗi =))");
+    // var url = ;
+  })
+
+})
 // Bot listen region
 bot.on('message', async msg => {
   const text = msg.text.trim();
   const chatId = msg.chat.id;
+  console.log("Username:" + msg.from.username + "\n");
+  console.log("Fullname:" + msg.from.first_name + " " + msg.from.last_name + "\n");
+  console.log("Text:" + msg.text + "\n");
+  if(msg.chat.type === 'supergroup'){
+    console.log("Group Id:" + msg.chat.id + "\n");
+    console.log("Group Name:" + msg.chat.title + "\n");
+  }
   if (text.startsWith("/angi")){
     var monan = [
       'bún bò Huế',
@@ -80,14 +133,35 @@ bot.on('message', async msg => {
     bot.sendMessage(chatId, "Hôm nay ăn " +monan[~~(Math.random()* monan.length)]);
   }
   if (text.startsWith("/sexy")){
-    var url = 'https://translate.google.com/translate_tts?ie=UTF-8&q=Thằng đồi truỵ này&tl=vi&client=tw-ob';
+    console.log("Username:" + msg.from.username + "\n");
+  console.log("Fullname:" + msg.from.first_name + " " + msg.from.last_name + "\n");
+  console.log("Text:" + msg.text + "\n");
+  if(msg.chat.type === 'supergroup'){
+    console.log("Group Id:" + msg.chat.id + "\n");
+    console.log("Group Name:" + msg.chat.title + "\n");
+  }
+    var url = 'https://translate.google.com/translate_tts?ie=UTF-8&q=Bớt bớt lại đi bạn ơi&tl=vi&client=tw-ob';
     bot.sendAudio(chatId,url);
   }
   if (text.startsWith("/tudongguithongbaocovid")) {
+    console.log("Username:" + msg.from.username + "\n");
+    console.log("Fullname:" + msg.from.first_name + " " + msg.from.last_name + "\n");
+    console.log("Text:" + msg.text + "\n");
+    if(msg.chat.type === 'supergroup'){
+      console.log("Group Id:" + msg.chat.id + "\n");
+      console.log("Group Name:" + msg.chat.title + "\n");
+    }
     addGroup.addGroup(chatId);
     bot.sendMessage(chatId, "Đã đăng ký!");
   }
   if (text.startsWith("/help")) {
+    console.log("Username:" + msg.from.username + "\n");
+    console.log("Fullname:" + msg.from.first_name + " " + msg.from.last_name + "\n");
+    console.log("Text:" + msg.text + "\n");
+    if(msg.chat.type === 'supergroup'){
+      console.log("Group Id:" + msg.chat.id + "\n");
+      console.log("Group Name:" + msg.chat.title + "\n");
+    }
     var messageContent = "*Danh sách các lệnhh:\* \n";
     messageContent += "\- \/xinh : Xem ảnh gái xinh đẹp mlem mlem \n";
     messageContent += "\- \/angi : Chọn xem hôm nay sẽ ăn gì \n";
@@ -98,6 +172,13 @@ bot.on('message', async msg => {
     });
   }
   if (text.startsWith("/xinh")) {
+    console.log("Username:" + msg.from.username + "\n");
+    console.log("Fullname:" + msg.from.first_name + " " + msg.from.last_name + "\n");
+    console.log("Text:" + msg.text + "\n");
+    if(msg.chat.type === 'supergroup'){
+      console.log("Group Id:" + msg.chat.id + "\n");
+      console.log("Group Name:" + msg.chat.title + "\n");
+    }
     data.data().then(response => {
       var obj = JSON.parse(response);
       var srcImg = obj['photo-url-1280'];
@@ -115,6 +196,13 @@ bot.on('message', async msg => {
     });
   }
   if (text.startsWith("/covid")) {
+    console.log("Username:" + msg.from.username + "\n");
+    console.log("Fullname:" + msg.from.first_name + " " + msg.from.last_name + "\n");
+    console.log("Text:" + msg.text + "\n");
+    if(msg.chat.type === 'supergroup'){
+      console.log("Group Id:" + msg.chat.id + "\n");
+      console.log("Group Name:" + msg.chat.title + "\n");
+    }
     // Write Javascript code here
     covid.covid().then(response => {
       var today = new Date();
@@ -139,6 +227,13 @@ bot.on('message', async msg => {
     })
   }
   if (text.startsWith("/khen")) {
+    console.log("Username:" + msg.from.username + "\n");
+    console.log("Fullname:" + msg.from.first_name + " " + msg.from.last_name + "\n");
+    console.log("Text:" + msg.text + "\n");
+    if(msg.chat.type === 'supergroup'){
+      console.log("Group Id:" + msg.chat.id + "\n");
+      console.log("Group Name:" + msg.chat.title + "\n");
+    }
     var loikhen = [
       ' xinh đẹp vcl',
       ' là 1 con bóng chính hiệu',
@@ -155,27 +250,7 @@ bot.on('message', async msg => {
     bot.sendMessage(chatId, name);
   }
 
-  bot.onText(/tiktok.com/, (msg, match) => {
-    // 'msg' is the received Message from Telegram
-    // 'match' is the result of executing the regexp above on the text content
-    // of the message
-    const chatId = msg.chat.id;
-    const resp = match.input; // the captured "whatever"
-    // console.log(resp);
-    bot.sendMessage(chatId, "Đợi Xíu =))");
-    getTikTok.getTikTok(resp).then(response => {
-      var data = response.data.hdplay;
-      // console.log();
-      bot.sendMessage(chatId, response.data.title);
-      bot.sendVideo(chatId,data);
-      
-    }).catch(err => {
-      console.log(err);
-      bot.sendMessage(chatId, "Đợi Xíu =))");
-      // var url = ;
-    })
   
-  })
   // tinh nang bi mat
   if (removeAccents(text).toLowerCase().replace(" ", "").includes("quanganh")) {
     // console.log(removeAccents(text).toLowerCase().replace(" ",""));
@@ -189,45 +264,7 @@ bot.on('message', async msg => {
   }
 });
 
-var job = new CronJob(
-	'00 10 07,19 * * *',
-	function() {
-    var today = new Date();
-    console.log("sendMessage");
-    var date = today.getDate() + '\-' + (today.getMonth() + 1) + '\-' + today.getFullYear();
-      getListGroup.getListGroup().then(response => {
-        var obj = JSON.parse(response);
-        obj.forEach(function(item,index){
-          covid.covid().then(response => {
-            var today = new Date();
-            var date = today.getDate() + '\-' + (today.getMonth() + 1) + '\-' + today.getFullYear();
-            var arr = response;
-            var messageContent = "*Thông tin covid 19 (" + date + ")\* \n";
-            messageContent += "Hà Nội: \n";
-            messageContent += "\- Số ca hôm nay: " + arr.hanoi.casesToday + "\n";
-            messageContent += "\- Tổng số ca: " + arr.hanoi.cases + "\n";
-            messageContent += "\- Tử vong: " + arr.hanoi.death + "\n";
-            messageContent += "Cả nước: \n";
-            messageContent += "\- Tổng số ca: " + arr.canuoc.cases + "\n";
-            messageContent += "\- Tử vong: " + arr.canuoc.death + "\n";
-            messageContent += "\- Đang điều trị: " + arr.canuoc.treating + "\n";
-            messageContent += "\- Phục hồi: " + arr.canuoc.recovered + "\n";
-            bot.sendMessage(item.groupid, messageContent, {
-              parse_mode: "Markdown"
-            });
-        
-          }).catch(err => {
-            console.log(err);
-            bot.sendMessage(item.groupid, "Lỗi");
-          })
-        });
-      })
-	},
-	null,
-	true,
-	'Asia/Ho_Chi_Minh'
-);
-job.start();
+
     
 function removeAccents(str) {
   var AccentsMap = [
