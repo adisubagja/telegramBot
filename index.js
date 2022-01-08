@@ -26,8 +26,8 @@ app.use(
 app.get('/', function (req, res) {
   res.send('Developed by Hữu Hiếu')
 })
-app.get('/list-group',db.getListGroup);
-app.post('/add-group',db.addGroup);
+app.get('/list-group', db.getListGroup);
+app.post('/add-group', db.addGroup);
 console.log("App này đang chạy port 3000");
 app.listen(process.env.PORT || 3000);
 // wakeup bot
@@ -45,7 +45,7 @@ bot.onText(/\. (.+)/, (msg, match) => {
   console.log("Username:" + msg.from.username + "\n");
   console.log("Fullname:" + msg.from.first_name + " " + msg.from.last_name + "\n");
   console.log("Text:" + msg.text + "\n");
-  if(msg.chat.type === 'supergroup'){
+  if (msg.chat.type === 'supergroup') {
     console.log("Group Id:" + msg.chat.id + "\n");
     console.log("Group Name:" + msg.chat.title + "\n");
   }
@@ -55,8 +55,8 @@ bot.onText(/\. (.+)/, (msg, match) => {
     bot.sendMessage(chatId, msg);
   });
   // send back the matched "whatever" to the chat
-  
-}); 
+
+});
 bot.onText(/\, (.+)/, (msg, match) => {
   // 'msg' is the received Message from Telegram
   // 'match' is the result of executing the regexp above on the text content
@@ -67,7 +67,7 @@ bot.onText(/\, (.+)/, (msg, match) => {
   console.log("Username:" + msg.from.username + "\n");
   console.log("Fullname:" + msg.from.first_name + " " + msg.from.last_name + "\n");
   console.log("Text:" + msg.text + "\n");
-  if(msg.chat.type === 'supergroup'){
+  if (msg.chat.type === 'supergroup') {
     console.log("Group Id:" + msg.chat.id + "\n");
     console.log("Group Name:" + msg.chat.title + "\n");
   }
@@ -75,12 +75,12 @@ bot.onText(/\, (.+)/, (msg, match) => {
     var obj = JSON.parse(response);
     var msg = obj.success;
     // bot.sendMessage(chatId, msg);
-    var url = 'https://translate.google.com/translate_tts?ie=UTF-8&q='+msg+'&tl=vi&client=tw-ob';
-    bot.sendAudio(chatId,url);
+    var url = 'https://translate.google.com/translate_tts?ie=UTF-8&q=' + msg + '&tl=vi&client=tw-ob';
+    bot.sendAudio(chatId, url);
   });
   // send back the matched "whatever" to the chat
-  
-}); 
+
+});
 bot.onText(/tiktok.com/, (msg, match) => {
   // 'msg' is the received Message from Telegram
   // 'match' is the result of executing the regexp above on the text content
@@ -90,22 +90,22 @@ bot.onText(/tiktok.com/, (msg, match) => {
   console.log("Username:" + msg.from.username + "\n");
   console.log("Fullname:" + msg.from.first_name + " " + msg.from.last_name + "\n");
   console.log("Text:" + msg.text + "\n");
-  if(msg.chat.type === 'supergroup'){
+  if (msg.chat.type === 'supergroup') {
     console.log("Group Id:" + msg.chat.id + "\n");
     console.log("Group Name:" + msg.chat.title + "\n");
   }
   bot.sendMessage(chatId, "Đợi Xíu =))");
   getTikTok.getData(resp).then(response => {
     var data;
-    if (response.data.hdplay != null){
+    if (response.data.hdplay != null) {
       data = response.data.hdplay;
-    }else{
+    } else {
       data = response.data.wmplay;
     }
     // console.log();
     bot.sendMessage(chatId, response.data.title);
-    bot.sendVideo(chatId,data);
-    
+    bot.sendVideo(chatId, data);
+
   }).catch(err => {
     console.log(err);
     bot.sendMessage(chatId, "Lỗi =))");
@@ -120,34 +120,94 @@ bot.on('message', async msg => {
   console.log("Username:" + msg.from.username + "\n");
   console.log("Fullname:" + msg.from.first_name + " " + msg.from.last_name + "\n");
   console.log("Text:" + msg.text + "\n");
-  if(msg.chat.type === 'supergroup'){
+  if (msg.chat.type === 'supergroup') {
     console.log("Group Id:" + msg.chat.id + "\n");
     console.log("Group Name:" + msg.chat.title + "\n");
   }
-  if (text.startsWith("/angi")){
+  if (text.startsWith("/angi")) {
     var monan = [
       'bún bò Huế',
       'cơm',
       'gì cũng được'
     ];
-    bot.sendMessage(chatId, "Hôm nay ăn " +monan[~~(Math.random()* monan.length)]);
+    bot.sendMessage(chatId, "Hôm nay ăn " + monan[~~(Math.random() * monan.length)]);
   }
-  if (text.startsWith("/sexy")){
+  if (text.startsWith("/trending")) {
     console.log("Username:" + msg.from.username + "\n");
-  console.log("Fullname:" + msg.from.first_name + " " + msg.from.last_name + "\n");
-  console.log("Text:" + msg.text + "\n");
-  if(msg.chat.type === 'supergroup'){
-    console.log("Group Id:" + msg.chat.id + "\n");
-    console.log("Group Name:" + msg.chat.title + "\n");
+    console.log("Fullname:" + msg.from.first_name + " " + msg.from.last_name + "\n");
+    console.log("Text:" + msg.text + "\n");
+    if (msg.chat.type === 'supergroup') {
+      console.log("Group Id:" + msg.chat.id + "\n");
+      console.log("Group Name:" + msg.chat.title + "\n");
+    }
+    bot.sendMessage(chatId, "Đợi Xíu =))");
+    getTikTok.getTrending().then(response => {
+      var data = response.data[Math.floor(Math.random() * response.data.length)];
+      var title = data.title;
+      if (data.hdplay != null) {
+        data = data.hdplay;
+      } else {
+        data = data.wmplay;
+      }
+      bot.sendMessage(chatId, title);
+      bot.sendVideo(chatId, data);
+
+    }).catch(err => {
+      console.log(err);
+      bot.sendMessage(chatId, "Lỗi =))");
+      // var url = ;
+    })
   }
+
+  if (text.startsWith("/search")) {
+    console.log("Username:" + msg.from.username + "\n");
+    console.log("Fullname:" + msg.from.first_name + " " + msg.from.last_name + "\n");
+    console.log("Text:" + msg.text + "\n");
+    if (msg.chat.type === 'supergroup') {
+      console.log("Group Id:" + msg.chat.id + "\n");
+      console.log("Group Name:" + msg.chat.title + "\n");
+    }
+    bot.sendMessage(chatId, "Đợi Xíu =))");
+    var keyword = msg.text.replace("/search","");
+    getTikTok.searchVideo(keyword).then(response => {
+      if(response.data.videos){
+        var data = response.data.videos[Math.floor(Math.random() * response.data.videos.length)];
+        var title = data.title;
+        if (data.hdplay != null) {
+          data = data.hdplay;
+        } else {
+          data = data.wmplay;
+        }
+        bot.sendMessage(chatId, title);
+        bot.sendVideo(chatId, data);
+      }else{
+        bot.sendMessage(chatId, "Không tìm thấy kết quả");
+      }
+     
+
+    }).catch(err => {
+      console.log(err);
+      bot.sendMessage(chatId, "Lỗi =))");
+      // var url = ;
+    })
+  }
+
+  if (text.startsWith("/sexy")) {
+    console.log("Username:" + msg.from.username + "\n");
+    console.log("Fullname:" + msg.from.first_name + " " + msg.from.last_name + "\n");
+    console.log("Text:" + msg.text + "\n");
+    if (msg.chat.type === 'supergroup') {
+      console.log("Group Id:" + msg.chat.id + "\n");
+      console.log("Group Name:" + msg.chat.title + "\n");
+    }
     var url = 'https://translate.google.com/translate_tts?ie=UTF-8&q=Bớt bớt lại đi bạn ơi&tl=vi&client=tw-ob';
-    bot.sendAudio(chatId,url);
+    bot.sendAudio(chatId, url);
   }
   if (text.startsWith("/tudongguithongbaocovid")) {
     console.log("Username:" + msg.from.username + "\n");
     console.log("Fullname:" + msg.from.first_name + " " + msg.from.last_name + "\n");
     console.log("Text:" + msg.text + "\n");
-    if(msg.chat.type === 'supergroup'){
+    if (msg.chat.type === 'supergroup') {
       console.log("Group Id:" + msg.chat.id + "\n");
       console.log("Group Name:" + msg.chat.title + "\n");
     }
@@ -158,7 +218,7 @@ bot.on('message', async msg => {
     console.log("Username:" + msg.from.username + "\n");
     console.log("Fullname:" + msg.from.first_name + " " + msg.from.last_name + "\n");
     console.log("Text:" + msg.text + "\n");
-    if(msg.chat.type === 'supergroup'){
+    if (msg.chat.type === 'supergroup') {
       console.log("Group Id:" + msg.chat.id + "\n");
       console.log("Group Name:" + msg.chat.title + "\n");
     }
@@ -175,7 +235,7 @@ bot.on('message', async msg => {
     console.log("Username:" + msg.from.username + "\n");
     console.log("Fullname:" + msg.from.first_name + " " + msg.from.last_name + "\n");
     console.log("Text:" + msg.text + "\n");
-    if(msg.chat.type === 'supergroup'){
+    if (msg.chat.type === 'supergroup') {
       console.log("Group Id:" + msg.chat.id + "\n");
       console.log("Group Name:" + msg.chat.title + "\n");
     }
@@ -199,7 +259,7 @@ bot.on('message', async msg => {
     console.log("Username:" + msg.from.username + "\n");
     console.log("Fullname:" + msg.from.first_name + " " + msg.from.last_name + "\n");
     console.log("Text:" + msg.text + "\n");
-    if(msg.chat.type === 'supergroup'){
+    if (msg.chat.type === 'supergroup') {
       console.log("Group Id:" + msg.chat.id + "\n");
       console.log("Group Name:" + msg.chat.title + "\n");
     }
@@ -230,7 +290,7 @@ bot.on('message', async msg => {
     console.log("Username:" + msg.from.username + "\n");
     console.log("Fullname:" + msg.from.first_name + " " + msg.from.last_name + "\n");
     console.log("Text:" + msg.text + "\n");
-    if(msg.chat.type === 'supergroup'){
+    if (msg.chat.type === 'supergroup') {
       console.log("Group Id:" + msg.chat.id + "\n");
       console.log("Group Name:" + msg.chat.title + "\n");
     }
@@ -246,11 +306,11 @@ bot.on('message', async msg => {
       ' gì cũng biết, gì cũng hay',
       ' là nhất, là số một',
     ];
-    var name = msg.from.first_name + " " + msg.from.last_name +loikhen[~~(Math.random()* loikhen.length)];
+    var name = msg.from.first_name + " " + msg.from.last_name + loikhen[~~(Math.random() * loikhen.length)];
     bot.sendMessage(chatId, name);
   }
 
-  
+
   // tinh nang bi mat
   if (removeAccents(text).toLowerCase().replace(" ", "").includes("quanganh")) {
     // console.log(removeAccents(text).toLowerCase().replace(" ",""));
@@ -265,7 +325,7 @@ bot.on('message', async msg => {
 });
 
 
-    
+
 function removeAccents(str) {
   var AccentsMap = [
     "aàảãáạăằẳẵắặâầẩẫấậ",
