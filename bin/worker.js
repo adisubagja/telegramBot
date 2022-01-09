@@ -35,6 +35,7 @@ getListGroup.getListGroup().then(response => {
             bot.sendMessage(item.groupid, messageContent, {
                 parse_mode: "Markdown"
             });
+process.exit(0);
 
         }).catch(err => {
             console.log(err);
