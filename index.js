@@ -35,7 +35,7 @@ setInterval(function () {
   http.get("http://gaixinhbot.herokuapp.com");
 }, 3000); // every 5 minutes (300000)
 
-bot.onText(/\. (.+)/, (msg, match) => {
+bot.onText(/^\. (.+)/, (msg, match) => {
   // 'msg' is the received Message from Telegram
   // 'match' is the result of executing the regexp above on the text content
   // of the message
@@ -57,7 +57,7 @@ bot.onText(/\. (.+)/, (msg, match) => {
   // send back the matched "whatever" to the chat
 
 });
-bot.onText(/\, (.+)/, (msg, match) => {
+bot.onText(/^\, (.+)/, (msg, match) => {
   // 'msg' is the received Message from Telegram
   // 'match' is the result of executing the regexp above on the text content
   // of the message
