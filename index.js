@@ -312,16 +312,16 @@ bot.on('message', async msg => {
 
 
   // tinh nang bi mat
-  if (removeAccents(text).toLowerCase().replace(" ", "").includes("quanganh")) {
-    // console.log(removeAccents(text).toLowerCase().replace(" ",""));
-    var name = "Ối dồi ôi làng nước ơi, ai đó vừa nhắc đến mỹ nữ Quang Anh kìa 😮";
-    bot.sendMessage(chatId, name);
-  }
+//   if (removeAccents(text).toLowerCase().replace(" ", "").includes("quanganh")) {
+//     // console.log(removeAccents(text).toLowerCase().replace(" ",""));
+//     var name = "Ối dồi ôi làng nước ơi, ai đó vừa nhắc đến mỹ nữ Quang Anh kìa 😮";
+//     bot.sendMessage(chatId, name);
+//   }
 
-  if (removeAccents(text).toLowerCase().replace(" ", "").includes("thai")) {
-    var name = "Quang Anh yêu Thái 😮";
-    bot.sendMessage(chatId, name);
-  }
+//   if (removeAccents(text).toLowerCase().replace(" ", "").includes("thai")) {
+//     var name = "Quang Anh yêu Thái 😮";
+//     bot.sendMessage(chatId, name);
+//   }
 });
 
 
