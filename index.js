@@ -1,8 +1,7 @@
 require('dotenv').config();
 const http = require('http');
-
+const unixTime = require('./asset/unix_time');
 const env = process.env;
-var CronJob = require('cron').CronJob;
 const express = require('express');
 const TelegramBot = require('node-telegram-bot-api');
 const token = env.TELEGRAM_TOKEN || "token";
@@ -17,6 +16,7 @@ const sim = require('./modules/simsimi');
 const addGroup = require('./modules/addGroup');
 const getListGroup = require('./modules/getAllGroup');
 const getTikTok = require('./modules/tiktok');
+const weather = require('./modules/weather');
 app.use(bodyParser.json())
 app.use(
   bodyParser.urlencoded({
@@ -45,6 +45,7 @@ bot.onText(/^\. (.+)/, (msg, match) => {
   console.log("Username:" + msg.from.username + "\n");
   console.log("Fullname:" + msg.from.first_name + " " + msg.from.last_name + "\n");
   console.log("Text:" + msg.text + "\n");
+  console.log("Full:" + JSON.stringify(msg) + "\n");
   if (msg.chat.type === 'supergroup') {
     console.log("Group Id:" + msg.chat.id + "\n");
     console.log("Group Name:" + msg.chat.title + "\n");
@@ -52,10 +53,9 @@ bot.onText(/^\. (.+)/, (msg, match) => {
   sim.sim(resp).then(response => {
     var obj = JSON.parse(response);
     var msg = obj.success;
-    bot.sendMessage(chatId, msg);
+    bot.sendMessage(chatId, msg, { reply_to_message_id: msg.message_id });
   });
   // send back the matched "whatever" to the chat
-
 });
 bot.onText(/^\, (.+)/, (msg, match) => {
   // 'msg' is the received Message from Telegram
@@ -81,6 +81,8 @@ bot.onText(/^\, (.+)/, (msg, match) => {
   // send back the matched "whatever" to the chat
 
 });
+// =============================================================================================
+
 bot.onText(/tiktok.com/, (msg, match) => {
   // 'msg' is the received Message from Telegram
   // 'match' is the result of executing the regexp above on the text content
@@ -108,11 +110,11 @@ bot.onText(/tiktok.com/, (msg, match) => {
 
   }).catch(err => {
     console.log(err);
-    bot.sendMessage(chatId, "Lỗi =))");
+    bot.sendMessage(chatId, "Từ từ thôi nào =))");
     // var url = ;
   })
-
 })
+// =============================================================================================
 // Bot listen region
 bot.on('message', async msg => {
   const text = msg.text.trim();
@@ -124,6 +126,7 @@ bot.on('message', async msg => {
     console.log("Group Id:" + msg.chat.id + "\n");
     console.log("Group Name:" + msg.chat.title + "\n");
   }
+  // *********************************************************
   if (text.startsWith("/angi")) {
     var monan = [
       'bún bò Huế',
@@ -132,6 +135,80 @@ bot.on('message', async msg => {
     ];
     bot.sendMessage(chatId, "Hôm nay ăn " + monan[~~(Math.random() * monan.length)]);
   }
+  // *********************************************************
+  if (text.startsWith("/weather")) {
+    console.log("Username:" + msg.from.username + "\n");
+    console.log("Fullname:" + msg.from.first_name + " " + msg.from.last_name + "\n");
+    console.log("Text:" + msg.text + "\n");
+    if (msg.chat.type === 'supergroup') {
+      console.log("Group Id:" + msg.chat.id + "\n");
+      console.log("Group Name:" + msg.chat.title + "\n");
+    }
+    weather.getCurrent().then(response => {
+      var data = response;
+      var messageContent = "*Thời tiết hiện tại in BKASOFT\* \n";
+      messageContent += "\- Thời gian: " + unixTime.timeConverter(data.dt) + "\n";
+      messageContent += "\- Hiện tại: " + data.weather[0].description + "\n";
+      messageContent += "\- Nhiệt độ: " + data.main.temp + " °C cảm giác như " + data.main.feels_like + " °C \n";
+      messageContent += "\- Nhiệt độ thấp nhất: " + data.main.temp_min + " °C \n";
+      messageContent += "\- Nhiệt độ cao nhất: " + data.main.temp_max + " °C \n";
+      messageContent += "\- Độ ẩm: " + data.main.humidity + " % \n";
+      messageContent += "\- Mây: " + data.clouds.all + " % \n";
+      bot.sendMessage(chatId, messageContent, {
+        parse_mode: "Markdown"
+      });
+    }).catch(err => {
+      console.log(err);
+      bot.sendMessage(chatId, "Từ từ thôi nào =))");
+      // var url = ;
+    })
+  }
+  // *********************************************************
+  if (text.startsWith("/hourweather")) {
+    console.log("Username:" + msg.from.username + "\n");
+    console.log("Fullname:" + msg.from.first_name + " " + msg.from.last_name + "\n");
+    console.log("Text:" + msg.text + "\n");
+    if (msg.chat.type === 'supergroup') {
+      console.log("Group Id:" + msg.chat.id + "\n");
+      console.log("Group Name:" + msg.chat.title + "\n");
+    }
+    weather.getHoursly().then(response => {
+      var data = response;
+      var currentTime = data.current.dt;
+      var arr = [];
+      var limit = 8;
+      var start = 1;
+      data.hourly.forEach(hour => {
+        if (hour.dt > currentTime) {
+          if (start < limit) {
+            arr.push(hour);
+            start++;
+          }
+        }
+      })
+      arr.sort((a, b) => {
+        return a.dt - b.dt;
+      });
+      var content = "* Thời tiết tại BKASOFT\* \n \n";
+      arr.forEach(hour => {
+        if (hour.dt > currentTime) {
+          var messageContent = "* Thời gian: " + unixTime.timeConverter(hour.dt) + "\* \n";
+          messageContent += "\- Trạng thái: " + hour.weather[0].description + "\n";
+          messageContent += "\- Nhiệt độ: " + hour.temp + " °C cảm giác như " + hour.feels_like + " °C \n";
+          messageContent += "\- Mây: " + hour.clouds + " % \n";
+          content += messageContent+"\n";
+        }
+      })
+      bot.sendMessage(chatId, content, {
+        parse_mode: "Markdown"
+      });
+    }).catch(err => {
+      console.log(err);
+      bot.sendMessage(chatId, "Từ từ thôi nào =))");
+      // var url = ;
+    })
+  }
+  // *********************************************************
   if (text.startsWith("/trending")) {
     console.log("Username:" + msg.from.username + "\n");
     console.log("Fullname:" + msg.from.first_name + " " + msg.from.last_name + "\n");
@@ -154,11 +231,11 @@ bot.on('message', async msg => {
 
     }).catch(err => {
       console.log(err);
-      bot.sendMessage(chatId, "Lỗi =))");
+      bot.sendMessage(chatId, "Từ từ thôi nào =))");
       // var url = ;
     })
   }
-
+  // *********************************************************
   if (text.startsWith("/search")) {
     console.log("Username:" + msg.from.username + "\n");
     console.log("Fullname:" + msg.from.first_name + " " + msg.from.last_name + "\n");
@@ -168,9 +245,9 @@ bot.on('message', async msg => {
       console.log("Group Name:" + msg.chat.title + "\n");
     }
     bot.sendMessage(chatId, "Đợi Xíu =))");
-    var keyword = msg.text.replace("/search","");
+    var keyword = msg.text.replace("/search", "");
     getTikTok.searchVideo(keyword).then(response => {
-      if(response.data.videos){
+      if (response.data.videos) {
         var data = response.data.videos[Math.floor(Math.random() * response.data.videos.length)];
         var title = data.title;
         if (data.hdplay != null) {
@@ -180,18 +257,16 @@ bot.on('message', async msg => {
         }
         bot.sendMessage(chatId, title);
         bot.sendVideo(chatId, data);
-      }else{
+      } else {
         bot.sendMessage(chatId, "Không tìm thấy kết quả");
       }
-     
-
     }).catch(err => {
       console.log(err);
-      bot.sendMessage(chatId, "Lỗi =))");
+      bot.sendMessage(chatId, "Từ từ thôi nào =))");
       // var url = ;
     })
   }
-
+  // *********************************************************
   if (text.startsWith("/sexy")) {
     console.log("Username:" + msg.from.username + "\n");
     console.log("Fullname:" + msg.from.first_name + " " + msg.from.last_name + "\n");
@@ -203,6 +278,7 @@ bot.on('message', async msg => {
     var url = 'https://translate.google.com/translate_tts?ie=UTF-8&q=Bớt bớt lại đi bạn ơi&tl=vi&client=tw-ob';
     bot.sendAudio(chatId, url);
   }
+  // *********************************************************
   if (text.startsWith("/tudongguithongbaocovid")) {
     console.log("Username:" + msg.from.username + "\n");
     console.log("Fullname:" + msg.from.first_name + " " + msg.from.last_name + "\n");
@@ -214,6 +290,7 @@ bot.on('message', async msg => {
     addGroup.addGroup(chatId);
     bot.sendMessage(chatId, "Đã đăng ký!");
   }
+  // *********************************************************
   if (text.startsWith("/help")) {
     console.log("Username:" + msg.from.username + "\n");
     console.log("Fullname:" + msg.from.first_name + " " + msg.from.last_name + "\n");
@@ -231,6 +308,7 @@ bot.on('message', async msg => {
       parse_mode: "Markdown"
     });
   }
+  // *********************************************************
   if (text.startsWith("/xinh")) {
     console.log("Username:" + msg.from.username + "\n");
     console.log("Fullname:" + msg.from.first_name + " " + msg.from.last_name + "\n");
@@ -255,6 +333,7 @@ bot.on('message', async msg => {
       bot.sendMessage(chatId, err);
     });
   }
+  // *********************************************************
   if (text.startsWith("/covid")) {
     console.log("Username:" + msg.from.username + "\n");
     console.log("Fullname:" + msg.from.first_name + " " + msg.from.last_name + "\n");
@@ -286,9 +365,10 @@ bot.on('message', async msg => {
       bot.sendMessage(chatId, "Lỗi");
     })
   }
+  // *********************************************************
   if (text.startsWith("/khen")) {
     console.log("Username:" + msg.from.username + "\n");
-    console.log("Fullname:" + msg.from.first_name + " " + msg.from.last_name + "\n");
+    console.log("Fullname:" + (msg.from.first_name == null ? '' : msg.from.first_name) + " " + (msg.from.last_name == null ? '' : msg.from.last_name) + "\n");
     console.log("Text:" + msg.text + "\n");
     if (msg.chat.type === 'supergroup') {
       console.log("Group Id:" + msg.chat.id + "\n");
@@ -309,43 +389,4 @@ bot.on('message', async msg => {
     var name = msg.from.first_name + " " + msg.from.last_name + loikhen[~~(Math.random() * loikhen.length)];
     bot.sendMessage(chatId, name);
   }
-
-
-  // tinh nang bi mat
-//   if (removeAccents(text).toLowerCase().replace(" ", "").includes("quanganh")) {
-//     // console.log(removeAccents(text).toLowerCase().replace(" ",""));
-//     var name = "Ối dồi ôi làng nước ơi, ai đó vừa nhắc đến mỹ nữ Quang Anh kìa 😮";
-//     bot.sendMessage(chatId, name);
-//   }
-
-//   if (removeAccents(text).toLowerCase().replace(" ", "").includes("thai")) {
-//     var name = "Quang Anh yêu Thái 😮";
-//     bot.sendMessage(chatId, name);
-//   }
 });
-
-
-
-function removeAccents(str) {
-  var AccentsMap = [
-    "aàảãáạăằẳẵắặâầẩẫấậ",
-    "AÀẢÃÁẠĂẰẲẴẮẶÂẦẨẪẤẬ",
-    "dđ", "DĐ",
-    "eèẻẽéẹêềểễếệ",
-    "EÈẺẼÉẸÊỀỂỄẾỆ",
-    "iìỉĩíị",
-    "IÌỈĨÍỊ",
-    "oòỏõóọôồổỗốộơờởỡớợ",
-    "OÒỎÕÓỌÔỒỔỖỐỘƠỜỞỠỚỢ",
-    "uùủũúụưừửữứự",
-    "UÙỦŨÚỤƯỪỬỮỨỰ",
-    "yỳỷỹýỵ",
-    "YỲỶỸÝỴ"
-  ];
-  for (var i = 0; i < AccentsMap.length; i++) {
-    var re = new RegExp('[' + AccentsMap[i].substr(1) + ']', 'g');
-    var char = AccentsMap[i][0];
-    str = str.replace(re, char);
-  }
-  return str;
-}
