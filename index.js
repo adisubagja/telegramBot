@@ -117,7 +117,7 @@ bot.onText(/tiktok.com/, (msg, match) => {
 // =============================================================================================
 // Bot listen region
 bot.on('message', async msg => {
-  const text = msg.text;
+  const text = msg.text.trim();
   const chatId = msg.chat.id;
   console.log("Username:" + msg.from.username + "\n");
   console.log("Fullname:" + msg.from.first_name + " " + msg.from.last_name + "\n");
