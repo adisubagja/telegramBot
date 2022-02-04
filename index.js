@@ -81,8 +81,6 @@ bot.onText(/^\, (.+)/, (msg, match) => {
   // send back the matched "whatever" to the chat
 
 });
-// =============================================================================================
-
 bot.onText(/tiktok.com/, (msg, match) => {
   // 'msg' is the received Message from Telegram
   // 'match' is the result of executing the regexp above on the text content
@@ -114,7 +112,6 @@ bot.onText(/tiktok.com/, (msg, match) => {
     // var url = ;
   })
 })
-// =============================================================================================
 // Bot listen region
 bot.on('message', async msg => {
   const text = msg.text.trim();
@@ -126,7 +123,6 @@ bot.on('message', async msg => {
     console.log("Group Id:" + msg.chat.id + "\n");
     console.log("Group Name:" + msg.chat.title + "\n");
   }
-  // *********************************************************
   if (text.startsWith("/angi")) {
     var monan = [
       'bún bò Huế',
@@ -135,7 +131,7 @@ bot.on('message', async msg => {
     ];
     bot.sendMessage(chatId, "Hôm nay ăn " + monan[~~(Math.random() * monan.length)]);
   }
-  // *********************************************************
+
   if (text.startsWith("/weather")) {
     console.log("Username:" + msg.from.username + "\n");
     console.log("Fullname:" + msg.from.first_name + " " + msg.from.last_name + "\n");
@@ -163,7 +159,7 @@ bot.on('message', async msg => {
       // var url = ;
     })
   }
-  // *********************************************************
+
   if (text.startsWith("/hourweather")) {
     console.log("Username:" + msg.from.username + "\n");
     console.log("Fullname:" + msg.from.first_name + " " + msg.from.last_name + "\n");
@@ -208,7 +204,7 @@ bot.on('message', async msg => {
       // var url = ;
     })
   }
-  // *********************************************************
+
   if (text.startsWith("/trending")) {
     console.log("Username:" + msg.from.username + "\n");
     console.log("Fullname:" + msg.from.first_name + " " + msg.from.last_name + "\n");
@@ -235,7 +231,6 @@ bot.on('message', async msg => {
       // var url = ;
     })
   }
-  // *********************************************************
   if (text.startsWith("/search")) {
     console.log("Username:" + msg.from.username + "\n");
     console.log("Fullname:" + msg.from.first_name + " " + msg.from.last_name + "\n");
@@ -266,7 +261,6 @@ bot.on('message', async msg => {
       // var url = ;
     })
   }
-  // *********************************************************
   if (text.startsWith("/sexy")) {
     console.log("Username:" + msg.from.username + "\n");
     console.log("Fullname:" + msg.from.first_name + " " + msg.from.last_name + "\n");
@@ -278,7 +272,7 @@ bot.on('message', async msg => {
     var url = 'https://translate.google.com/translate_tts?ie=UTF-8&q=Bớt bớt lại đi bạn ơi&tl=vi&client=tw-ob';
     bot.sendAudio(chatId, url);
   }
-  // *********************************************************
+
   if (text.startsWith("/tudongguithongbaocovid")) {
     console.log("Username:" + msg.from.username + "\n");
     console.log("Fullname:" + msg.from.first_name + " " + msg.from.last_name + "\n");
@@ -290,7 +284,6 @@ bot.on('message', async msg => {
     addGroup.addGroup(chatId);
     bot.sendMessage(chatId, "Đã đăng ký!");
   }
-  // *********************************************************
   if (text.startsWith("/help")) {
     console.log("Username:" + msg.from.username + "\n");
     console.log("Fullname:" + msg.from.first_name + " " + msg.from.last_name + "\n");
@@ -308,7 +301,6 @@ bot.on('message', async msg => {
       parse_mode: "Markdown"
     });
   }
-  // *********************************************************
   if (text.startsWith("/xinh")) {
     console.log("Username:" + msg.from.username + "\n");
     console.log("Fullname:" + msg.from.first_name + " " + msg.from.last_name + "\n");
@@ -333,7 +325,6 @@ bot.on('message', async msg => {
       bot.sendMessage(chatId, err);
     });
   }
-  // *********************************************************
   if (text.startsWith("/covid")) {
     console.log("Username:" + msg.from.username + "\n");
     console.log("Fullname:" + msg.from.first_name + " " + msg.from.last_name + "\n");
@@ -365,7 +356,6 @@ bot.on('message', async msg => {
       bot.sendMessage(chatId, "Lỗi");
     })
   }
-  // *********************************************************
   if (text.startsWith("/khen")) {
     console.log("Username:" + msg.from.username + "\n");
     console.log("Fullname:" + (msg.from.first_name == null ? '' : msg.from.first_name) + " " + (msg.from.last_name == null ? '' : msg.from.last_name) + "\n");
