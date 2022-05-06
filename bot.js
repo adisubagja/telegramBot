@@ -367,6 +367,11 @@ const gitLabMessage = (result,id) => {
     case "push":
       
       var messageContent = `*${result?.user?.name}\* push to [${result?.project?.namespace}/${result?.project?.name}](${result?.project?.urls?.repository}) \n`;
+      if(result){
+          result.forEach(commit => {
+              messageContent+= `*${commit?.author?.name}\* : [${commit?.message}](${commit?.url}) \n`;
+          })
+      }
       bot.sendMessage(id,messageContent, {
         parse_mode: "Markdown"
       });
