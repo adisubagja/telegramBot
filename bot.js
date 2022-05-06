@@ -93,6 +93,7 @@ const Telegram = () => {
       })
       // Bot listen region
       bot.on('message', async (msg) => {
+          var messageId = msg.message_id;
         if(msg.text){
           const text = msg.text.trim();
           const chatId = msg.chat.id;
@@ -109,7 +110,9 @@ const Telegram = () => {
               'cơm',
               'gì cũng được'
             ];
-            bot.sendMessage(chatId, "Hôm nay ăn " + monan[~~(Math.random() * monan.length)]);
+            bot.sendMessage(chatId, "Hôm nay ăn " + monan[~~(Math.random() * monan.length)],{
+                reply_to_message_id: messageId
+            });
           }
         
           if (text.startsWith("/weather")) {
@@ -131,11 +134,14 @@ const Telegram = () => {
               messageContent += "\- Độ ẩm: " + data.main.humidity + " % \n";
               messageContent += "\- Mây: " + data.clouds.all + " % \n";
               bot.sendMessage(chatId, messageContent, {
-                parse_mode: "Markdown"
+                parse_mode: "Markdown",
+                reply_to_message_id: messageId
               });
             }).catch(err => {
               console.log(err);
-              bot.sendMessage(chatId, "Từ từ thôi nào =))");
+              bot.sendMessage(chatId, "Từ từ thôi nào =))",{
+                  reply_to_message_id: messageId
+              });
               // var url = ;
             })
           }
@@ -176,11 +182,14 @@ const Telegram = () => {
                 }
               })
               bot.sendMessage(chatId, content, {
-                parse_mode: "Markdown"
+                parse_mode: "Markdown",
+                reply_to_message_id: messageId
               });
             }).catch(err => {
               console.log(err);
-              bot.sendMessage(chatId, "Từ từ thôi nào =))");
+              bot.sendMessage(chatId, "Từ từ thôi nào =))",{
+                reply_to_message_id: messageId
+            });
               // var url = ;
             })
           }
@@ -202,12 +211,18 @@ const Telegram = () => {
               } else {
                 data = data.wmplay;
               }
-              bot.sendMessage(chatId, title);
-              bot.sendVideo(chatId, data);
+              bot.sendMessage(chatId, title,{
+                  reply_to_message_id: messageId
+              });
+              bot.sendVideo(chatId, data,{
+                  reply_to_message_id: messageId
+              });
         
             }).catch(err => {
               console.log(err);
-              bot.sendMessage(chatId, "Từ từ thôi nào =))");
+              bot.sendMessage(chatId, "Từ từ thôi nào =))",{
+                reply_to_message_id: messageId
+            });
               // var url = ;
             })
           }
@@ -230,40 +245,26 @@ const Telegram = () => {
                 } else {
                   data = data.wmplay;
                 }
-                bot.sendMessage(chatId, title);
-                bot.sendVideo(chatId, data);
+                bot.sendMessage(chatId, title,{
+                    reply_to_message_id: messageId
+                });
+                bot.sendVideo(chatId, data,{
+                    reply_to_message_id: messageId
+                });
               } else {
-                bot.sendMessage(chatId, "Không tìm thấy kết quả");
+                bot.sendMessage(chatId, "Không tìm thấy kết quả",{
+                    reply_to_message_id: messageId
+                });
               }
             }).catch(err => {
               console.log(err);
-              bot.sendMessage(chatId, "Từ từ thôi nào =))");
+              bot.sendMessage(chatId, "Từ từ thôi nào =))",{
+                  reply_to_message_id: messageId
+              });
               // var url = ;
             })
           }
-          if (text.startsWith("/sexy")) {
-            console.log("Username:" + msg.from.username + "\n");
-            console.log("Fullname:" + msg.from.first_name + " " + msg.from.last_name + "\n");
-            console.log("Text:" + msg.text + "\n");
-            if (msg.chat.type === 'supergroup') {
-              console.log("Group Id:" + msg.chat.id + "\n");
-              console.log("Group Name:" + msg.chat.title + "\n");
-            }
-            var url = 'https://translate.google.com/translate_tts?ie=UTF-8&q=Bớt bớt lại đi bạn ơi&tl=vi&client=tw-ob';
-            bot.sendAudio(chatId, url);
-          }
-        
-          if (text.startsWith("/tudongguithongbaocovid")) {
-            console.log("Username:" + msg.from.username + "\n");
-            console.log("Fullname:" + msg.from.first_name + " " + msg.from.last_name + "\n");
-            console.log("Text:" + msg.text + "\n");
-            if (msg.chat.type === 'supergroup') {
-              console.log("Group Id:" + msg.chat.id + "\n");
-              console.log("Group Name:" + msg.chat.title + "\n");
-            }
-            addGroup.addGroup(chatId);
-            bot.sendMessage(chatId, "Đã đăng ký!");
-          }
+          
           if (text.startsWith("/help")) {
             console.log("Username:" + msg.from.username + "\n");
             console.log("Fullname:" + msg.from.first_name + " " + msg.from.last_name + "\n");
@@ -276,9 +277,9 @@ const Telegram = () => {
             messageContent += "\- \/xinh : Xem ảnh gái xinh đẹp mlem mlem \n";
             messageContent += "\- \/angi : Chọn xem hôm nay sẽ ăn gì \n";
             messageContent += "\- \/covid : Thông tin covid-19 Hà Nội và Việt Nam\n";
-            messageContent += "\- \/tudongguithongbaocovid : Đăng ký nhận thông tin covid-19 Hà Nội và Việt Nam\n";
             bot.sendMessage(chatId, messageContent, {
-              parse_mode: "Markdown"
+              parse_mode: "Markdown",
+              reply_to_message_id: messageId
             });
           }
           if (text.startsWith("/xinh")) {
@@ -329,7 +330,8 @@ const Telegram = () => {
               messageContent += "\- Đang điều trị: " + arr.canuoc.treating + "\n";
               messageContent += "\- Phục hồi: " + arr.canuoc.recovered + "\n";
               bot.sendMessage(chatId, messageContent, {
-                parse_mode: "Markdown"
+                parse_mode: "Markdown",
+                reply_to_message_id: messageId
               });
             }).catch(err => {
               console.log(err);
@@ -357,7 +359,9 @@ const Telegram = () => {
               ' là nhất, là số một',
             ];
             var name = msg.from.first_name + " " + msg.from.last_name + loikhen[~~(Math.random() * loikhen.length)];
-            bot.sendMessage(chatId, name);
+            bot.sendMessage(chatId, name,{
+                reply_to_message_id: messageId
+            });
           }
         }
     });
@@ -368,7 +372,7 @@ const gitLabMessage = (result,id) => {
       
       var messageContent = `*${result?.user?.name}\* push to [${result?.project?.namespace}/${result?.project?.name}](${result?.project?.urls?.repository}) \n`;
           result?.commits?.forEach(commit => {
-              messageContent+= `*${commit?.author?.name}\* : [${commit?.message}](${commit?.url}) \n`;
+              messageContent+= `-   *_${commit?.author?.name}\_\* : [${commit?.message}](${commit?.url}) \n`;
           })
       bot.sendMessage(id,messageContent, {
         parse_mode: "Markdown"
