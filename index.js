@@ -5,7 +5,8 @@ const db = require('./asset/db');
 const app = express();
 const bodyParser = require('body-parser');
 const Telegram = require('./bot');
-
+const gitlab = require('./modules/gitlab');
+const { response } = require('express');
 const webHookEndPoint = "/webhook";
 // module
 app.use(bodyParser.json())
@@ -41,11 +42,33 @@ app.put(webHookEndPoint,(req,res) => {
   console.log(body);
 })
 
-app.post(webHookEndPoint,(req,res) => {
+app.delete(webHookEndPoint,(req,res) => {
   const {url} = req;
   console.log("Received Webhook DELETE Request");
   console.log("Url:");
   console.log(url);
+})
+
+// gitlab webhook
+app.post("/webhook/:id", async (req,res) => {
+  const {id} = req.params;
+  let body;
+  try {
+		body = await req.json();
+	} catch (_) {
+    return{
+      message: "Error"
+    }
+	}
+  let result = gitlab.transformGitLabEvent(body);
+  if (!result) {
+		return {
+      message: "Error"
+    }
+	}
+  return {
+    message: "Error"
+  }
 })
 // wakeup bot
 setInterval(function () {
