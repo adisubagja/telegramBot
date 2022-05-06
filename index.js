@@ -53,22 +53,9 @@ app.delete(webHookEndPoint,(req,res) => {
 app.post("/webhook/:id", async (req,res) => {
   const {id} = req.params;
   let body;
-  try {
-		body = await req.json();
-	} catch (_) {
-    return{
-      message: "Error"
-    }
-	}
+	body = await req.json();
   let result = gitlab.transformGitLabEvent(body);
-  if (!result) {
-		return {
-      message: "Error"
-    }
-	}
-  return {
-    message: "Error"
-  }
+  console.log(result);
 })
 // wakeup bot
 setInterval(function () {
