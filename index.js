@@ -52,10 +52,9 @@ app.delete(webHookEndPoint,(req,res) => {
 // gitlab webhook
 app.post("/webhook/:id", async (req,res) => {
   const {id} = req.params;
-  let body;
-	body = await req.json();
+  const {body} = req;
   let result = gitlab.transformGitLabEvent(body);
-  console.log(result);
+  console.log(result,body,id);
 })
 // wakeup bot
 setInterval(function () {
