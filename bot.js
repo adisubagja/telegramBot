@@ -365,8 +365,11 @@ const Telegram = () => {
 const gitLabMessage = (result,id) => {
   switch(result?.type){
     case "push":
-      var messageContent = `*${result?.user?.name} push to ${result?.project?.name}:\* \n`;
-      bot.sendMessage(id,messageContent);
+      
+      var messageContent = `*${result?.user?.name}\* push to [${result?.project?.namespace}/${result?.project?.name}](${result?.project?.urls?.repository}) \n`;
+      bot.sendMessage(id,messageContent, {
+        parse_mode: "Markdown"
+      });
       break;
     default:
       break;
