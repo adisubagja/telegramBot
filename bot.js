@@ -306,6 +306,14 @@ const Telegram = () => {
               bot.sendMessage(chatId, err);
             });
           }
+          if (text.startsWith("/gitlab")) {
+              var messageContent = "Copy URL ở dưới đây: \n\n";
+              messageContent+= "``` http://bot.huuhieu.name.vn/"+ msg.chat.id + "```";
+              bot.sendMessage(chatId, messageContent, {
+                parse_mode: "Markdown",
+                reply_to_message_id: messageId
+              });
+          }
           if (text.startsWith("/covid")) {
             console.log("Username:" + msg.from.username + "\n");
             console.log("Fullname:" + msg.from.first_name + " " + msg.from.last_name + "\n");
@@ -372,7 +380,7 @@ const gitLabMessage = (result,id) => {
     case "push":
       var messageContent = `*${result?.user?.name}\* push to [${result?.project?.namespace}/${result?.project?.name}](${result?.project?.urls?.repository}) \n`;
           result?.commits?.forEach(commit => {
-              messageContent+= `-   \_*${commit?.author?.name}\_\* : [${commit?.message}](${commit?.url}) \n`;
+              messageContent+= `-   _${commit?.author?.name} : [${commit?.message}](${commit?.url}) \_\n`;
           })
       bot.sendMessage(id,messageContent, {
         parse_mode: "Markdown"

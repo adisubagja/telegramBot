@@ -60,7 +60,7 @@ app.post("/webhook/:id", async (req,res) => {
 })
 // wakeup bot
 setInterval(function () {
-  http.get("http://gaixinhbot.herokuapp.com");
+  http.get("http://bot.huuhieu.name.vn/");
 }, 3000); // every 5 minutes (300000)
 
 Telegram.Telegram();
