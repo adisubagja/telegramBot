@@ -368,7 +368,7 @@ const gitLabMessage = (result,id) => {
       
       var messageContent = `*${result?.user?.name}\* push to [${result?.project?.namespace}/${result?.project?.name}](${result?.project?.urls?.repository}) \n`;
       if(result){
-          result.forEach(commit => {
+          result?.commit?.forEach(commit => {
               messageContent+= `*${commit?.author?.name}\* : [${commit?.message}](${commit?.url}) \n`;
           })
       }
