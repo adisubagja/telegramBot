@@ -56,10 +56,6 @@ app.post("/webhook/:id", async (req,res) => {
   console.log(body)
   let result = gitlab.transformGitLabEvent(body);
   console.log(result);
-  result?.commits.forEach(element => {
-      console.log(element.author);
-      console.log(element.files);
-  });
   Telegram.gitLabMessage(result,id);
 })
 // wakeup bot
