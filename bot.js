@@ -308,7 +308,7 @@ const Telegram = () => {
           }
           if (text.startsWith("/gitlab")) {
               var messageContent = "Copy URL ở dưới đây: \n\n";
-              messageContent+= "``` http://bot.huuhieu.name.vn/"+ msg.chat.id + "```";
+              messageContent+= "``` http://bot.huuhieu.name.vn/webhook/"+ msg.chat.id + "```";
               bot.sendMessage(chatId, messageContent, {
                 parse_mode: "Markdown",
                 reply_to_message_id: messageId
