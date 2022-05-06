@@ -362,5 +362,17 @@ const Telegram = () => {
         }
     });
 }
-
-module.exports = Telegram;
+const gitLabMessage = (result,id) => {
+  switch(result?.type){
+    case "push":
+      var messageContent = `*${result?.user?.name} push to ${result?.project?.name}:\* \n`;
+      bot.sendMessage(id,messageContent);
+      break;
+    default:
+      break;
+  }
+}
+module.exports = {
+  Telegram,
+  gitLabMessage
+}

@@ -1,14 +1,5 @@
 const _ = require("lodash");
 module.exports = {
-    jsonResponse : (content, init) => {
-        return new Response(JSON.stringify(content), {
-            ...init,
-            headers: {
-                ...init.headers,
-                "Content-Type": "application/json"
-            }
-        });
-    },
     formatTemplate : (templates, content, type) => {
         let result = templates[type];
     
@@ -64,6 +55,7 @@ module.exports = {
         switch (eventType) {
             case "push": {
                 result = {
+                    type: "push",
                     eventName: event.event_name,
                     sha: {
                         before: event.before,
@@ -116,6 +108,7 @@ module.exports = {
             }
             case "tag_push": {
                 result = {
+                    type:"tag_push",
                     eventName: event.event_name,
                     sha: {
                         before: event.before,
@@ -170,6 +163,7 @@ module.exports = {
             case "confidential_issue":
             case "issue": {
                 result = {
+                    type: "issue",
                     eventName: event.event_type,
                     title: event.object_attributes.title,
                     description: event.object_attributes.description,
@@ -223,6 +217,7 @@ module.exports = {
             case "confidential_note":
             case "note": {
                 result = {
+                    type: "note",
                     eventName: event.event_type,
                     createdDate: event.object_attributes.created_at,
                     updatedDate: event.object_attributes.updated_at,
@@ -256,6 +251,7 @@ module.exports = {
             }
             case "merge_request": {
                 result = {
+                    type: "merge_request",
                     eventName: event.event_type,
                     createdDate: event.object_attributes.created_at,
                     updatedDate: event.object_attributes.updated_at,
@@ -309,6 +305,7 @@ module.exports = {
             }
             case "job": {
                 result = {
+                    type: "job",
                     ref: event.ref,
                     tag: event.tag,
                     stage: event.build_stage,
@@ -345,12 +342,12 @@ module.exports = {
                         }
                     },
                     runner: {
-                        id: event.runner.id,
-                        description: event.runner.description,
-                        type: event.runner.runner_type,
-                        active: event.runner.active,
-                        shared: event.runner.is_shared,
-                        tags: event.runner.tags
+                        id: event.runner?.id,
+                        description: event.runner?.description,
+                        type: event.runner?.runner_type,
+                        active: event.runner?.active,
+                        shared: event.runner?.is_shared,
+                        tags: event.runner?.tags
                     }
                 };
     
@@ -358,6 +355,7 @@ module.exports = {
             }
             case "pipeline": {
                 result = {
+                    type: "pipeline",
                     id: event.id,
                     ref: event.ref,
                     tag: event.tag,
@@ -407,6 +405,7 @@ module.exports = {
             }
             case "wiki_page": {
                 result = {
+                    type: "wiki_page",
                     slug: event.object_attributes.slug,
                     title: event.object_attributes.title,
                     format: event.object_attributes.format,
@@ -450,6 +449,7 @@ module.exports = {
             }
             case "feature_flag": {
                 result = {
+                    type: "feature_flag",
                     id: event.object_attributes.id,
                     name: event.object_attributes.name,
                     description: event.object_attributes.description,
@@ -480,6 +480,7 @@ module.exports = {
             }
             case "release": {
                 result = {
+                    type: "release",
                     id: event.id,
                     description: event.description,
                     name: event.name,

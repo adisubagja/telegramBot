@@ -54,13 +54,14 @@ app.post("/webhook/:id", async (req,res) => {
   const {id} = req.params;
   const {body} = req;
   let result = gitlab.transformGitLabEvent(body);
-  console.log(result,body,id);
+  console.log(result,id);
+  Telegram.gitLabMessage(result,id);
 })
 // wakeup bot
 setInterval(function () {
   http.get("http://gaixinhbot.herokuapp.com");
 }, 3000); // every 5 minutes (300000)
 
-Telegram();
+Telegram.Telegram();
     
 
