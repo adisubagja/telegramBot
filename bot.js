@@ -380,7 +380,7 @@ const gitLabMessage = (result,id) => {
     case "push":
       var messageContent = `*${result?.user?.name}\* push to [${result?.project?.namespace}/${result?.project?.name}](${result?.project?.urls?.repository}) \n`;
           result?.commits?.forEach(commit => {
-              messageContent+= `-   _${commit?.author?.name} : [${commit?.message}](${commit?.url}) \_\n`;
+              messageContent+= `\t-   ${commit?.author?.name} : [${commit?.message}](${commit?.url}) \n`;
           })
       bot.sendMessage(id,messageContent, {
         parse_mode: "Markdown"
