@@ -53,8 +53,9 @@ app.delete(webHookEndPoint,(req,res) => {
 app.post("/webhook/:id", async (req,res) => {
   const {id} = req.params;
   const {body} = req;
+  console.log(body)
   let result = gitlab.transformGitLabEvent(body);
-  console.log(result,id);
+  console.log(result);
   Telegram.gitLabMessage(result,id);
 })
 // wakeup bot
