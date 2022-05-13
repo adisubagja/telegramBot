@@ -7,10 +7,9 @@ const bot = new TelegramBot(token, { polling: true });
 const covid = require('./modules/covid19');
 const data = require('./modules/gaixinh');
 const sim = require('./modules/simsimi');
-const addGroup = require('./modules/addGroup');
-const getListGroup = require('./modules/getAllGroup');
 const getTikTok = require('./modules/tiktok');
 const weather = require('./modules/weather');
+const unixTime = require("./asset/unix_time");
 const Telegram = () => {
     bot.onText(/^\. (.+)/, (msg, match) => {
         // 'msg' is the received Message from Telegram
@@ -386,6 +385,8 @@ const gitLabMessage = (result,id) => {
         parse_mode: "Markdown"
       });
       break;
+    case "pipeline":
+      var messageContent;
     default:
       break;
   }
