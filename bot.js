@@ -380,9 +380,9 @@ const gitLabMessage = (result,id) => {
   switch(result?.type){
     case "push":
       if(result?.sha?.before == "0000000000000000000000000000000000000000"){
-        messageContent += `*${result?.user?.name}\* đã tạo nhánh  *** [${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}](${result?.project?.urls?.repository}) \*\*\* \n`;
+        messageContent += `*${result?.user?.name}\* đã tạo nhánh [${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}](${result?.project?.urls?.repository}) \n`;
       }else if(result?.sha?.after == "0000000000000000000000000000000000000000"){
-        messageContent += `*${result?.user?.name}\* đã xoá nhánh  *** ${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}\*\*\* \n`;
+        messageContent += `*${result?.user?.name}\* đã xoá nhánh  ${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)} \n`;
       }else{
         messageContent += `*${result?.user?.name}\* đã push to [${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}](${result?.project?.urls?.repository}) \n`;
         result?.commits?.forEach(commit => {
@@ -411,21 +411,21 @@ const gitLabMessage = (result,id) => {
       console.log("result:",result)
       if (result?.status === 'running') {
         messageContent+= `\n  Pipeline đang chạy ⌛!!`
-        messageContent+= `\n  Project: *** [${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}](${result?.project?.urls?.repository}) \*\*\*`
+        messageContent+= `\n  Project:  [${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}](${result?.project?.urls?.repository})`
         messageContent+= `\n  Pipeline: [${result?.project?.urls?.repository}/-/pipelines/${result?.id}](${result?.project?.urls?.repository}/-/pipelines/${result?.id})`
-        messageContent+= `\n Commit: *** ${result?.commit?.author} : \*\*\* [${result?.commit?.message}](${result?.commit?.url}) `
+        messageContent+= `\n Commit: *** ${result?.commit?.author?.name} : \*\*\* [${result?.commit?.message}](${result?.commit?.url}) `
       }
       if (result?.status === 'error') {
         messageContent+= `\n  Build lỗi 🆘!!`
         messageContent+= `\n  Project: *** [${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}](${result?.project?.urls?.repository}) \*\*\*`
         messageContent+= `\n  Pipeline: [${result?.project?.urls?.repository}/-/pipelines/${result?.id}](${result?.project?.urls?.repository}/-/pipelines/${result?.id})`
-        messageContent+= `\n Commit: *** ${result?.commit?.author} : \*\*\* [${result?.commit?.message}](${result?.commit?.url}) `
+        messageContent+= `\n Commit: *** ${result?.commit?.author?.name} : \*\*\* [${result?.commit?.message}](${result?.commit?.url}) `
       }
       if (result?.status === 'success') {
         messageContent+= `\n  Build thành công ✅!!`
         messageContent+= `\n  Project: *** [${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}](${result?.project?.urls?.repository}) \*\*\*`
         messageContent+= `\n  Pipeline: [${result?.project?.urls?.repository}/-/pipelines/${result?.id}](${result?.project?.urls?.repository}/-/pipelines/${result?.id})`
-        messageContent+= `\n Commit: *** ${result?.commit?.author} : \*\*\* [${result?.commit?.message}](${result?.commit?.url}) `
+        messageContent+= `\n Commit: *** ${result?.commit?.author?.name} : \*\*\* [${result?.commit?.message}](${result?.commit?.url}) `
       }
       bot.sendMessage(id,messageContent, {
         parse_mode: "Markdown"
