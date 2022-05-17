@@ -411,17 +411,17 @@ const gitLabMessage = (result,id) => {
       if (result?.object_attributes?.status === 'running') {
         messageContent+= `\n 🙏 Đang deploy!!`
         messageContent+= `\n 👉 Project: ${result?.project?.name}`
-        messageContent+= `\n 🙏 ${data.project.web_url}`
+        messageContent+= `\n 🙏 ${result?.project?.web_url}`
       }
-      if (data.object_attributes.status === 'error') {
+      if (result?.object_attributes.status === 'error') {
         messageContent+= `\n 🆘 Build fail !!`
         messageContent+= `\n 👉 Project: ${result?.project?.name}`
-        messageContent+= `\n 🙏 ${data.project.web_url}`
+        messageContent+= `\n 🙏 ${result?.project?.web_url}`
       }
-      if (data.object_attributes.status === 'success') {
+      if (result?.object_attributes?.status === 'success') {
         messageContent+= `\n ✅ Build successful !!`
         messageContent+= `\n 👉 Project: ${result?.project?.name}`
-        messageContent+= `\n 🙏 ${data.project.web_url}`
+        messageContent+= `\n 🙏 ${result?.project?.web_url}`
       }
       bot.sendMessage(id,messageContent, {
         parse_mode: "Markdown"
