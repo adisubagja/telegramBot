@@ -353,24 +353,24 @@ module.exports = {
     
                 break;
             }
-            case "pipeline": {
+            case "pipeline": { 
                 result = {
                     type: "pipeline",
-                    id: event.id,
-                    ref: event.ref,
-                    tag: event.tag,
+                    id: event?.object_attributes?.id,
+                    ref: event?.object_attributes?.ref,
+                    tag: event?.object_attributes?.tag,
                     sha: {
-                        before: event.before_sha,
-                        after: event.sha
+                        before: event?.object_attributes?.before_sha,
+                        after: event?.object_attributes?.sha
                     },
-                    source: event.source,
-                    status: event.status,
-                    detailedStatus: event.detailed_status,
-                    stages: event.stages,
-                    createdAt: event.created_at,
-                    finishedAt: event.finished_at,
-                    duration: event.duration,
-                    queueDuration: event.queued_duration,
+                    source: event?.object_attributes?.source,
+                    status: event?.object_attributes?.status,
+                    detailedStatus: event?.object_attributes?.detailed_status,
+                    stages: event?.object_attributes?.stages,
+                    createdAt: event?.object_attributes?.created_at,
+                    finishedAt: event?.object_attributes?.finished_at,
+                    duration: event?.object_attributes?.duration,
+                    queueDuration: event?.object_attributes?.queued_duration,
                     user: {
                         id: event.user.id,
                         name: event.user.name,
