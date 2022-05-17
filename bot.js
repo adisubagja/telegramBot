@@ -10,6 +10,7 @@ const sim = require('./modules/simsimi');
 const getTikTok = require('./modules/tiktok');
 const weather = require('./modules/weather');
 const unixTime = require("./asset/unix_time");
+const { getBranchName } = require('./asset/removeString');
 const Telegram = () => {
     bot.onText(/^\. (.+)/, (msg, match) => {
         // 'msg' is the received Message from Telegram
@@ -375,12 +376,19 @@ const Telegram = () => {
     });
 }
 const gitLabMessage = (result,id) => {
+  var messageContent = "";
   switch(result?.type){
     case "push":
-      var messageContent = `*${result?.user?.name}\* push to [${result?.project?.namespace}/${result?.project?.name}](${result?.project?.urls?.repository}) \n`;
-          result?.commits?.forEach(commit => {
-              messageContent+= `\t-   ${commit?.author?.name} : [${commit?.message}](${commit?.url}) \n`;
-          })
+      if(result?.before === 0000000000000000000000000000000000000000){
+        messageContent += `*${result?.user?.name}\* created branch  [${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}](${result?.project?.urls?.repository}) \n`;
+      }else if(result?.after === 0000000000000000000000000000000000000000){
+        messageContent += `*${result?.user?.name}\* deleted branch  *${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}\* \n`;
+      }else{
+        messageContent += `*${result?.user?.name}\* push to [${result?.project?.namespace}/${result?.project?.name}](${result?.project?.urls?.repository}) \n`;
+        result?.commits?.forEach(commit => {
+            messageContent+= `\t-   ${commit?.author?.name} : [${commit?.message}](${commit?.url}) \n`;
+        })
+      }
       bot.sendMessage(id,messageContent, {
         parse_mode: "Markdown"
       });
