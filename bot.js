@@ -380,11 +380,11 @@ const gitLabMessage = (result,id) => {
   switch(result?.type){
     case "push":
       if(result?.sha?.before == "0000000000000000000000000000000000000000"){
-        messageContent += `*${result?.user?.name}\* created branch  *** [${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}](${result?.project?.urls?.repository}) \*\*\* \n`;
+        messageContent += `*${result?.user?.name}\* đã tạo nhánh  *** [${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}](${result?.project?.urls?.repository}) \*\*\* \n`;
       }else if(result?.sha?.after == "0000000000000000000000000000000000000000"){
-        messageContent += `*${result?.user?.name}\* deleted branch  *** ${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}\*\*\* \n`;
+        messageContent += `*${result?.user?.name}\* đã xoá nhánh  *** ${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}\*\*\* \n`;
       }else{
-        messageContent += `*${result?.user?.name}\* push to [${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}](${result?.project?.urls?.repository}) \n`;
+        messageContent += `*${result?.user?.name}\* đã push to [${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}](${result?.project?.urls?.repository}) \n`;
         result?.commits?.forEach(commit => {
             messageContent+= `\t-   ${commit?.author?.name} : [${commit?.message}](${commit?.url}) \n`;
             if( commit?.files?.added > 0 || commit?.files?.modified > 0 || commit?.files.removed > 0){
@@ -410,19 +410,22 @@ const gitLabMessage = (result,id) => {
     case "pipeline":
       console.log("result:",result)
       if (result?.status === 'running') {
-        messageContent+= `\n 🙏 Đang deploy!!`
-        messageContent+= `\n 👉 Project: ${result?.project?.name}`
-        messageContent+= `\n 🙏 [${result?.project?.urls?.repository}/-/pipelines/${result?.id}](${result?.project?.urls?.repository}/-/pipelines/${result?.id})`
+        messageContent+= `\n  Pipeline đang chạy ⌛!!`
+        messageContent+= `\n  Project: *** [${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}](${result?.project?.urls?.repository}) \*\*\*`
+        messageContent+= `\n  Pipeline: [${result?.project?.urls?.repository}/-/pipelines/${result?.id}](${result?.project?.urls?.repository}/-/pipelines/${result?.id})`
+        messageContent+= `\n Commit: *** ${result?.commit?.author} : \*\*\* [${result?.commit?.message}](${result?.commit?.url}) `
       }
       if (result?.status === 'error') {
-        messageContent+= `\n 🆘 Build fail !!`
-        messageContent+= `\n 👉 Project: ${result?.project?.name}`
-        messageContent+= `\n 🙏 [${result?.project?.urls?.repository}/-/pipelines/${result?.id}](${result?.project?.urls?.repository}/-/pipelines/${result?.id})`
+        messageContent+= `\n  Build lỗi 🆘!!`
+        messageContent+= `\n  Project: *** [${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}](${result?.project?.urls?.repository}) \*\*\*`
+        messageContent+= `\n  Pipeline: [${result?.project?.urls?.repository}/-/pipelines/${result?.id}](${result?.project?.urls?.repository}/-/pipelines/${result?.id})`
+        messageContent+= `\n Commit: *** ${result?.commit?.author} : \*\*\* [${result?.commit?.message}](${result?.commit?.url}) `
       }
       if (result?.status === 'success') {
-        messageContent+= `\n ✅ Build successful !!`
-        messageContent+= `\n 👉 Project: ${result?.project?.name}`
-        messageContent+= `\n 🙏 [${result?.project?.urls?.repository}/-/pipelines/${result?.id}](${result?.project?.urls?.repository}/-/pipelines/${result?.id})`
+        messageContent+= `\n  Build thành công ✅!!`
+        messageContent+= `\n  Project: *** [${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}](${result?.project?.urls?.repository}) \*\*\*`
+        messageContent+= `\n  Pipeline: [${result?.project?.urls?.repository}/-/pipelines/${result?.id}](${result?.project?.urls?.repository}/-/pipelines/${result?.id})`
+        messageContent+= `\n Commit: *** ${result?.commit?.author} : \*\*\* [${result?.commit?.message}](${result?.commit?.url}) `
       }
       bot.sendMessage(id,messageContent, {
         parse_mode: "Markdown"
