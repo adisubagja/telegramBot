@@ -379,15 +379,29 @@ const gitLabMessage = (result,id) => {
   var messageContent = "";
   switch(result?.type){
     case "push":
-      console.log(result?.before, result?.after)
-      if(result?.before == "0000000000000000000000000000000000000000"){
-        messageContent += `*${result?.user?.name}\* created branch  [${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}](${result?.project?.urls?.repository}) \n`;
-      }else if(result?.after == "0000000000000000000000000000000000000000"){
-        messageContent += `*${result?.user?.name}\* deleted branch  *${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}\* \n`;
+      console.log(result?.sha?.before, result?.sha?.after)
+      if(result?.sha?.before == "0000000000000000000000000000000000000000"){
+        messageContent += `*${result?.user?.name}\* created branch  *** [${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}](${result?.project?.urls?.repository})\*\*\* \n`;
+      }else if(result?.sha?.after == "0000000000000000000000000000000000000000"){
+        messageContent += `*${result?.user?.name}\* deleted branch  *** ${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}\*\*\* \n`;
       }else{
         messageContent += `*${result?.user?.name}\* push to [${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}](${result?.project?.urls?.repository}) \n`;
         result?.commits?.forEach(commit => {
             messageContent+= `\t-   ${commit?.author?.name} : [${commit?.message}](${commit?.url}) \n`;
+            if( commit?.files?.added > 0 || commit?.files?.modified > 0 || commit?.files.removed > 0){
+              messageContent+= `(`;
+              if( commit?.files?.added > 0){
+                messageContent+= `* ${commit?.files?.added} files added `;
+              }
+              if( commit?.files?.modified > 0){
+                messageContent+= `* ${commit?.files?.modified} files modified `;
+              }
+              if( commit?.files?.removed > 0){
+                messageContent+= `* ${commit?.files?.removed} files removed `;
+              }
+              messageContent+= `)`;
+            }
+            
         })
       }
       bot.sendMessage(id,messageContent, {
