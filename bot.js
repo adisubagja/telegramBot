@@ -408,20 +408,20 @@ const gitLabMessage = (result,id) => {
       });
       break;
     case "pipeline":
-      if (result?.object_attributes?.status === 'running') {
+      if (result?.status === 'running') {
         messageContent+= `\n 🙏 Đang deploy!!`
         messageContent+= `\n 👉 Project: ${result?.project?.name}`
-        messageContent+= `\n 🙏 ${result?.project?.web_url}`
+        messageContent+= `\n 🙏 [${result?.project?.urls?.repository}/-/pipelines/${result?.id}](${result?.project?.urls?.repository}/-/pipelines/${result?.id})`
       }
-      if (result?.object_attributes.status === 'error') {
+      if (result?.status === 'error') {
         messageContent+= `\n 🆘 Build fail !!`
         messageContent+= `\n 👉 Project: ${result?.project?.name}`
-        messageContent+= `\n 🙏 ${result?.project?.web_url}`
+        messageContent+= `\n 🙏 [${result?.project?.urls?.repository}/-/pipelines/${result?.id}](${result?.project?.urls?.repository}/-/pipelines/${result?.id})`
       }
-      if (result?.object_attributes?.status === 'success') {
+      if (result?.status === 'success') {
         messageContent+= `\n ✅ Build successful !!`
         messageContent+= `\n 👉 Project: ${result?.project?.name}`
-        messageContent+= `\n 🙏 ${result?.project?.web_url}`
+        messageContent+= `\n 🙏 [${result?.project?.urls?.repository}/-/pipelines/${result?.id}](${result?.project?.urls?.repository}/-/pipelines/${result?.id})`
       }
       bot.sendMessage(id,messageContent, {
         parse_mode: "Markdown"
