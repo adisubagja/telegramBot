@@ -379,9 +379,9 @@ const gitLabMessage = (result,id) => {
   var messageContent = "";
   switch(result?.type){
     case "push":
-      console.log(result?.sha?.before, result?.sha?.after)
+      console.log(result)
       if(result?.sha?.before == "0000000000000000000000000000000000000000"){
-        messageContent += `*${result?.user?.name}\* created branch  *** [${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}](${result?.project?.urls?.repository})\*\*\* \n`;
+        messageContent += `*${result?.user?.name}\* created branch  *** [${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}](${result?.project?.urls?.repository}) \*\*\* \n`;
       }else if(result?.sha?.after == "0000000000000000000000000000000000000000"){
         messageContent += `*${result?.user?.name}\* deleted branch  *** ${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}\*\*\* \n`;
       }else{
