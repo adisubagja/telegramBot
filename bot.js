@@ -408,6 +408,7 @@ const gitLabMessage = (result,id) => {
       });
       break;
     case "pipeline":
+      console.log("result:",result)
       if (result?.status === 'running') {
         messageContent+= `\n 🙏 Đang deploy!!`
         messageContent+= `\n 👉 Project: ${result?.project?.name}`
