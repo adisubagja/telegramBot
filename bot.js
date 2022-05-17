@@ -379,6 +379,7 @@ const gitLabMessage = (result,id) => {
   var messageContent = "";
   switch(result?.type){
     case "push":
+      console.log(result?.before, result?.after)
       if(result?.before == "0000000000000000000000000000000000000000"){
         messageContent += `*${result?.user?.name}\* created branch  [${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}](${result?.project?.urls?.repository}) \n`;
       }else if(result?.after == "0000000000000000000000000000000000000000"){
