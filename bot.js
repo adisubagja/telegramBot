@@ -379,7 +379,6 @@ const gitLabMessage = (result,id) => {
   var messageContent = "";
   switch(result?.type){
     case "push":
-      console.log(result)
       if(result?.sha?.before == "0000000000000000000000000000000000000000"){
         messageContent += `*${result?.user?.name}\* created branch  *** [${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}](${result?.project?.urls?.repository}) \*\*\* \n`;
       }else if(result?.sha?.after == "0000000000000000000000000000000000000000"){
@@ -409,7 +408,24 @@ const gitLabMessage = (result,id) => {
       });
       break;
     case "pipeline":
-      var messageContent;
+      if (result?.object_attributes?.status === 'running') {
+        messageContent+= `\n 🙏 Đang deploy!!`
+        messageContent+= `\n 👉 Project: ${result?.project?.name}`
+        messageContent+= `\n 🙏 ${data.project.web_url}`
+      }
+      if (data.object_attributes.status === 'error') {
+        messageContent+= `\n 🆘 Build fail !!`
+        messageContent+= `\n 👉 Project: ${result?.project?.name}`
+        messageContent+= `\n 🙏 ${data.project.web_url}`
+      }
+      if (data.object_attributes.status === 'success') {
+        messageContent+= `\n ✅ Build successful !!`
+        messageContent+= `\n 👉 Project: ${result?.project?.name}`
+        messageContent+= `\n 🙏 ${data.project.web_url}`
+      }
+      bot.sendMessage(id,messageContent, {
+        parse_mode: "Markdown"
+      });
     default:
       break;
   }
