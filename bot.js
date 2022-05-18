@@ -388,14 +388,14 @@ const gitLabMessage = (result,id) => {
         result?.commits?.forEach(commit => {
             messageContent+= `\t-   ${commit?.author?.name} : [${commit?.message}](${commit?.url}) \n`;
             if( commit?.files?.added?.length > 0 || commit?.files?.modified?.length > 0 || commit?.files.removed?.length > 0){
-              messageContent+= `(`;
-              if( commit?.files?.added > 0){
+              messageContent+= `\n\t(`;
+              if( commit?.files?.added?.length > 0){
                 messageContent+= `* ${commit?.files?.added?.length} files added `;
               }
-              if( commit?.files?.modified > 0){
+              if( commit?.files?.modified?.length > 0){
                 messageContent+= `* ${commit?.files?.modified?.length} files modified `;
               }
-              if( commit?.files?.removed > 0){
+              if( commit?.files?.removed?.length > 0){
                 messageContent+= `* ${commit?.files?.removed?.length} files removed `;
               }
               messageContent+= `)`;
