@@ -386,6 +386,7 @@ const gitLabMessage = (result,id) => {
       }else{
         messageContent += `*${result?.user?.name}\* đã push to [${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}](${result?.project?.urls?.repository}) \n`;
         result?.commits?.forEach(commit => {
+            console.log(commit.files);
             messageContent+= `\t-   ${commit?.author?.name} : [${commit?.message}](${commit?.url}) \n`;
             if( commit?.files?.added > 0 || commit?.files?.modified > 0 || commit?.files.removed > 0){
               messageContent+= `(`;
@@ -410,22 +411,22 @@ const gitLabMessage = (result,id) => {
     case "pipeline":
       console.log("result:",result)
       if (result?.status === 'running') {
-        messageContent+= `\n  Pipeline đang chạy ⌛!!`
-        messageContent+= `\n  Project:  [${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}](${result?.project?.urls?.repository})`
-        messageContent+= `\n  Pipeline: [${result?.project?.urls?.repository}/-/pipelines/${result?.id}](${result?.project?.urls?.repository}/-/pipelines/${result?.id})`
-        messageContent+= `\n Commit: *** ${result?.commit?.author?.name} : \*\*\* [${result?.commit?.message}](${result?.commit?.url}) `
+        messageContent+= `\nPipeline đang chạy ⌛!!`
+        messageContent+= `\nProject:  [${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}](${result?.project?.urls?.repository})`
+        messageContent+= `\nPipeline: [${result?.project?.urls?.repository}/-/pipelines/${result?.id}](${result?.project?.urls?.repository}/-/pipelines/${result?.id})`
+        messageContent+= `\nCommit: *** ${result?.commit?.author?.name} : \*\*\* [${result?.commit?.message}](${result?.commit?.url}) `
       }
       if (result?.status === 'error') {
-        messageContent+= `\n  Build lỗi 🆘!!`
-        messageContent+= `\n  Project: *** [${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}](${result?.project?.urls?.repository}) \*\*\*`
-        messageContent+= `\n  Pipeline: [${result?.project?.urls?.repository}/-/pipelines/${result?.id}](${result?.project?.urls?.repository}/-/pipelines/${result?.id})`
-        messageContent+= `\n Commit: *** ${result?.commit?.author?.name} : \*\*\* [${result?.commit?.message}](${result?.commit?.url}) `
+        messageContent+= `\nBuild lỗi 🆘!!`
+        messageContent+= `\nProject: *** [${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}](${result?.project?.urls?.repository}) \*\*\*`
+        messageContent+= `\nPipeline: [${result?.project?.urls?.repository}/-/pipelines/${result?.id}](${result?.project?.urls?.repository}/-/pipelines/${result?.id})`
+        messageContent+= `\nCommit: *** ${result?.commit?.author?.name} : \*\*\* [${result?.commit?.message}](${result?.commit?.url}) `
       }
       if (result?.status === 'success') {
-        messageContent+= `\n  Build thành công ✅!!`
-        messageContent+= `\n  Project: *** [${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}](${result?.project?.urls?.repository}) \*\*\*`
-        messageContent+= `\n  Pipeline: [${result?.project?.urls?.repository}/-/pipelines/${result?.id}](${result?.project?.urls?.repository}/-/pipelines/${result?.id})`
-        messageContent+= `\n Commit: *** ${result?.commit?.author?.name} : \*\*\* [${result?.commit?.message}](${result?.commit?.url}) `
+        messageContent+= `\nBuild thành công ✅!!`
+        messageContent+= `\nProject: *** [${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}](${result?.project?.urls?.repository}) \*\*\*`
+        messageContent+= `\nPipeline: [${result?.project?.urls?.repository}/-/pipelines/${result?.id}](${result?.project?.urls?.repository}/-/pipelines/${result?.id})`
+        messageContent+= `\nCommit: *** ${result?.commit?.author?.name} : \*\*\* [${result?.commit?.message}](${result?.commit?.url}) `
       }
       bot.sendMessage(id,messageContent, {
         parse_mode: "Markdown"
