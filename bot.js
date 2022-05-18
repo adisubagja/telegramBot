@@ -386,18 +386,17 @@ const gitLabMessage = (result,id) => {
       }else{
         messageContent += `*${result?.user?.name}\* đã push to [${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}](${result?.project?.urls?.repository}) \n`;
         result?.commits?.forEach(commit => {
-            console.log(commit.files);
             messageContent+= `\t-   ${commit?.author?.name} : [${commit?.message}](${commit?.url}) \n`;
-            if( commit?.files?.added > 0 || commit?.files?.modified > 0 || commit?.files.removed > 0){
+            if( commit?.files?.added?.length > 0 || commit?.files?.modified?.length > 0 || commit?.files.removed?.length > 0){
               messageContent+= `(`;
               if( commit?.files?.added > 0){
-                messageContent+= `* ${commit?.files?.added} files added `;
+                messageContent+= `* ${commit?.files?.added?.length} files added `;
               }
               if( commit?.files?.modified > 0){
-                messageContent+= `* ${commit?.files?.modified} files modified `;
+                messageContent+= `* ${commit?.files?.modified?.length} files modified `;
               }
               if( commit?.files?.removed > 0){
-                messageContent+= `* ${commit?.files?.removed} files removed `;
+                messageContent+= `* ${commit?.files?.removed?.length} files removed `;
               }
               messageContent+= `)`;
             }
