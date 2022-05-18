@@ -410,22 +410,22 @@ const gitLabMessage = (result,id) => {
     case "pipeline":
       console.log("result:",result)
       if (result?.status === 'running') {
-        messageContent+= `\nPipeline đang chạy ⌛!!`
-        messageContent+= `\nProject:  [${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}](${result?.project?.urls?.repository})`
-        messageContent+= `\nPipeline: [${result?.project?.urls?.repository}/-/pipelines/${result?.id}](${result?.project?.urls?.repository}/-/pipelines/${result?.id})`
-        messageContent+= `\nCommit: *** ${result?.commit?.author?.name} : \*\*\* [${result?.commit?.message}](${result?.commit?.url}) `
+        messageContent+= `\nPipeline is running ⌛!!`
+        messageContent+= `\n\t ➡️ [${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}](${result?.project?.urls?.repository})`
+        messageContent+= `\n\t ➡️ [${result?.project?.urls?.repository}/-/pipelines/${result?.id}](${result?.project?.urls?.repository}/-/pipelines/${result?.id})`
+        messageContent+= `\n\t ➡️ *** ${result?.commit?.author?.name} : \*\*\* [${result?.commit?.message}](${result?.commit?.url}) `
       }
       if (result?.status === 'error') {
-        messageContent+= `\nBuild lỗi 🆘!!`
-        messageContent+= `\nProject: *** [${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}](${result?.project?.urls?.repository}) \*\*\*`
-        messageContent+= `\nPipeline: [${result?.project?.urls?.repository}/-/pipelines/${result?.id}](${result?.project?.urls?.repository}/-/pipelines/${result?.id})`
-        messageContent+= `\nCommit: *** ${result?.commit?.author?.name} : \*\*\* [${result?.commit?.message}](${result?.commit?.url}) `
+        messageContent+= `\nBuild failed 🆘!!`
+        messageContent+= `\n\t ➡️ *** [${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}](${result?.project?.urls?.repository}) \*\*\*`
+        messageContent+= `\n\t ➡️ [${result?.project?.urls?.repository}/-/pipelines/${result?.id}](${result?.project?.urls?.repository}/-/pipelines/${result?.id})`
+        messageContent+= `\n\t ➡️ *** ${result?.commit?.author?.name} : \*\*\* [${result?.commit?.message}](${result?.commit?.url}) `
       }
       if (result?.status === 'success') {
         messageContent+= `\nBuild thành công ✅!!`
-        messageContent+= `\nProject: *** [${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}](${result?.project?.urls?.repository}) \*\*\*`
-        messageContent+= `\nPipeline: [${result?.project?.urls?.repository}/-/pipelines/${result?.id}](${result?.project?.urls?.repository}/-/pipelines/${result?.id})`
-        messageContent+= `\nCommit: *** ${result?.commit?.author?.name} : \*\*\* [${result?.commit?.message}](${result?.commit?.url}) `
+        messageContent+= `\n\t ➡️ *** [${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}](${result?.project?.urls?.repository}) \*\*\*`
+        messageContent+= `\n\t ➡️ [${result?.project?.urls?.repository}/-/pipelines/${result?.id}](${result?.project?.urls?.repository}/-/pipelines/${result?.id})`
+        messageContent+= `\n\t ➡️ *** ${result?.commit?.author?.name} : \*\*\* [${result?.commit?.message}](${result?.commit?.url}) `
       }
       bot.sendMessage(id,messageContent, {
         parse_mode: "Markdown"
