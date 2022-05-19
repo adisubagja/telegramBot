@@ -290,7 +290,7 @@ const Telegram = () => {
               console.log("Group Id:" + msg.chat.id + "\n");
               console.log("Group Name:" + msg.chat.title + "\n");
             }
-            data.data().then(response => {
+             data.data().then(response => {
               var obj = JSON.parse(response);
               var srcImg = obj['photo-url-1280'];
               // var caption = obj['photo-caption'];

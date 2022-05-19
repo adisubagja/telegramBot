@@ -1,7 +1,7 @@
 const { rejects } = require('assert');
 var http = require('http');
 const { resolve } = require('path');
-var url = "http://api.huuhieu.name.vn/gxcl/";
+var url = "http://api.huuhieu.name.vn/api/gxcl/";
 
 module.exports = {
     data: () => {
