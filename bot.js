@@ -418,13 +418,13 @@ const gitLabMessage = (result,id) => {
       }
       if (result?.status === 'error') {
         messageContent+= `\n⚙️ Build failed 🆘!! \n`
-        messageContent+= `\n\n📄 \t  *** [${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}](${result?.project?.urls?.repository}) \*\*\*`
+        messageContent+= `\n\n📄 \t  [${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}](${result?.project?.urls?.repository})`
         messageContent+= `\n\n🔗 \t  [${result?.project?.urls?.repository}/-/pipelines/${result?.id}](${result?.project?.urls?.repository}/-/pipelines/${result?.id})`
         messageContent+= `\n\n📄 \t  *** ${result?.commit?.author?.name} : \*\*\* [${result?.commit?.message}](${result?.commit?.url}) `
       }
       if (result?.status === 'success') {
         messageContent+= `\n⚙️ Build thành công ✅!! \n`
-        messageContent+= `\n\n📄 \t  *** [${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}](${result?.project?.urls?.repository}) \*\*\*`
+        messageContent+= `\n\n📄 \t  [${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}](${result?.project?.urls?.repository})`
         messageContent+= `\n\n🔗 \t  [${result?.project?.urls?.repository}/-/pipelines/${result?.id}](${result?.project?.urls?.repository}/-/pipelines/${result?.id})`
         messageContent+= `\n\n📄 \t  *** ${result?.commit?.author?.name} : \*\*\* [${result?.commit?.message}](${result?.commit?.url}) `
       }
