@@ -392,15 +392,15 @@ const gitLabMessage = (result,id) => {
               messageContent+= `(`;
               if( commit?.files?.added?.length > 0){
                 console.log(commit?.files?.added?.length)
-                messageContent+= ` \` ${commit?.files?.added?.length} files added \`\* `;
+                messageContent+= ` ${commit?.files?.added?.length} files added \* `;
               }
               if( commit?.files?.modified?.length > 0){
                 console.log(commit?.files?.modified?.length)
-                messageContent+= `\` ${commit?.files?.modified?.length} files modified \`\*`;
+                messageContent+= ` ${commit?.files?.modified?.length} files modified \*`;
               }
               if( commit?.files?.removed?.length > 0){
                 console.log(commit?.files?.removed?.length)
-                messageContent+= `\` ${commit?.files?.removed?.length} files removed \`\*`;
+                messageContent+= ` ${commit?.files?.removed?.length} files removed \*`;
               }
               messageContent+= `) \n\n`;
             }
