@@ -387,19 +387,22 @@ const gitLabMessage = (result,id) => {
         messageContent += `*${result?.user?.name}\* đã push to [${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}](${result?.project?.urls?.repository}) \n`;
         result?.commits?.forEach(commit => {
             messageContent+= `\t-   ${commit?.author?.name} : [${commit?.message}](${commit?.url}) \n`;
-            if( commit?.files?.added?.length > 0 || commit?.files?.modified?.length > 0 || commit?.files.removed?.length > 0){
-              messageContent+= `\n\t`;
+            if( commit?.files?.added?.length > 0 || commit?.files?.modified?.length > 0 || commit?.files?.removed?.length > 0){
+              messageContent+= `\t`;
               messageContent+= `(`;
               if( commit?.files?.added?.length > 0){
-                messageContent+= `* ${commit?.files?.added?.length} files added `;
+                console.log(commit?.files?.added?.length)
+                messageContent+= `* ${commit?.files?.added?.length} files added \* `;
               }
               if( commit?.files?.modified?.length > 0){
-                messageContent+= `* ${commit?.files?.modified?.length} files modified `;
+                console.log(commit?.files?.modified?.length)
+                messageContent+= `* ${commit?.files?.modified?.length} files modified \*`;
               }
               if( commit?.files?.removed?.length > 0){
-                messageContent+= `* ${commit?.files?.removed?.length} files removed `;
+                console.log(commit?.files?.removed?.length)
+                messageContent+= `* ${commit?.files?.removed?.length} files removed \*`;
               }
-              messageContent+= `)`;
+              messageContent+= `) \n\n`;
             }
             
         })
