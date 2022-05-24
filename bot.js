@@ -290,7 +290,7 @@ const Telegram = () => {
               console.log("Group Id:" + msg.chat.id + "\n");
               console.log("Group Name:" + msg.chat.title + "\n");
             }
-            data.data().then(response => {
+             data.data().then(response => {
               var obj = JSON.parse(response);
               var srcImg = obj['photo-url-1280'];
               // var caption = obj['photo-caption'];
@@ -379,14 +379,32 @@ const gitLabMessage = (result,id) => {
   var messageContent = "";
   switch(result?.type){
     case "push":
-      if(result?.before == 0000000000000000000000000000000000000000){
-        messageContent += `*${result?.user?.name}\* created branch  [${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}](${result?.project?.urls?.repository}) \n`;
-      }else if(result?.after == 0000000000000000000000000000000000000000){
-        messageContent += `*${result?.user?.name}\* deleted branch  *${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}\* \n`;
+      if(result?.sha?.before == "0000000000000000000000000000000000000000"){
+        messageContent += `*${result?.user?.name}\* đã tạo nhánh [${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}](${result?.project?.urls?.repository}) \n`;
+      }else if(result?.sha?.after == "0000000000000000000000000000000000000000"){
+        messageContent += `*${result?.user?.name}\* đã xoá nhánh  ${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)} \n`;
       }else{
-        messageContent += `*${result?.user?.name}\* push to [${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}](${result?.project?.urls?.repository}) \n`;
+        messageContent += `*${result?.user?.name}\* đã push to [${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}](${result?.project?.urls?.repository}) \n`;
         result?.commits?.forEach(commit => {
             messageContent+= `\t-   ${commit?.author?.name} : [${commit?.message}](${commit?.url}) \n`;
+            if( commit?.files?.added?.length > 0 || commit?.files?.modified?.length > 0 || commit?.files?.removed?.length > 0){
+              messageContent+= `\t`;
+              messageContent+= `(`;
+              if( commit?.files?.added?.length > 0){
+                console.log(commit?.files?.added?.length)
+                messageContent+= ` ${commit?.files?.added?.length} files added`;
+              }
+              if( commit?.files?.modified?.length > 0){
+                console.log(commit?.files?.modified?.length)
+                messageContent+= ` ${commit?.files?.modified?.length} files modified`;
+              }
+              if( commit?.files?.removed?.length > 0){
+                console.log(commit?.files?.removed?.length)
+                messageContent+= ` ${commit?.files?.removed?.length} files removed`;
+              }
+              messageContent+= `) \n\n`;
+            }
+            
         })
       }
       bot.sendMessage(id,messageContent, {
@@ -394,7 +412,28 @@ const gitLabMessage = (result,id) => {
       });
       break;
     case "pipeline":
-      var messageContent;
+      console.log("result:",result)
+      if (result?.status === 'running') {
+        messageContent+= `\n⚙️ Pipeline is running ⌛!! \n`
+        messageContent+= `\n\n📄 \t  [${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}](${result?.project?.urls?.repository})`
+        messageContent+= `\n\n🔗 \t  [${result?.project?.urls?.repository}/-/pipelines/${result?.id}](${result?.project?.urls?.repository}/-/pipelines/${result?.id})`
+        messageContent+= `\n\n📄 \t  *** ${result?.commit?.author?.name} : \*\*\* [${result?.commit?.message}](${result?.commit?.url}) `
+      }
+      if (result?.status === 'error') {
+        messageContent+= `\n⚙️ Build failed 🆘!! \n`
+        messageContent+= `\n\n📄 \t  [${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}](${result?.project?.urls?.repository})`
+        messageContent+= `\n\n🔗 \t  [${result?.project?.urls?.repository}/-/pipelines/${result?.id}](${result?.project?.urls?.repository}/-/pipelines/${result?.id})`
+        messageContent+= `\n\n📄 \t  *** ${result?.commit?.author?.name} : \*\*\* [${result?.commit?.message}](${result?.commit?.url}) `
+      }
+      if (result?.status === 'success') {
+        messageContent+= `\n⚙️ Build thành công ✅!! \n`
+        messageContent+= `\n\n📄 \t  [${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}](${result?.project?.urls?.repository})`
+        messageContent+= `\n\n🔗 \t  [${result?.project?.urls?.repository}/-/pipelines/${result?.id}](${result?.project?.urls?.repository}/-/pipelines/${result?.id})`
+        messageContent+= `\n\n📄 \t  *** ${result?.commit?.author?.name} : \*\*\* [${result?.commit?.message}](${result?.commit?.url}) `
+      }
+      bot.sendMessage(id,messageContent, {
+        parse_mode: "Markdown"
+      });
     default:
       break;
   }
