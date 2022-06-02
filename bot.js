@@ -381,6 +381,30 @@ const gitLabMessage = (result,id) => {
     case "push":
       if(result?.sha?.before == "0000000000000000000000000000000000000000"){
         messageContent += `*${result?.user?.name}\* đã tạo nhánh [${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}](${result?.project?.urls?.repository}) \n`;
+        if(result?.commits?.length > 0){
+          messageContent += `*${result?.user?.name}\* đã push to [${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)}](${result?.project?.urls?.repository}) \n`;
+          result?.commits?.forEach(commit => {
+              messageContent+= `\t-   ${commit?.author?.name} : [${commit?.message}](${commit?.url}) \n`;
+              if( commit?.files?.added?.length > 0 || commit?.files?.modified?.length > 0 || commit?.files?.removed?.length > 0){
+                messageContent+= `\t`;
+                messageContent+= `(`;
+                if( commit?.files?.added?.length > 0){
+                  console.log(commit?.files?.added?.length)
+                  messageContent+= ` ${commit?.files?.added?.length} files added`;
+                }
+                if( commit?.files?.modified?.length > 0){
+                  console.log(commit?.files?.modified?.length)
+                  messageContent+= ` ${commit?.files?.modified?.length} files modified`;
+                }
+                if( commit?.files?.removed?.length > 0){
+                  console.log(commit?.files?.removed?.length)
+                  messageContent+= ` ${commit?.files?.removed?.length} files removed`;
+                }
+                messageContent+= `) \n\n`;
+              }
+              
+          })
+        }
       }else if(result?.sha?.after == "0000000000000000000000000000000000000000"){
         messageContent += `*${result?.user?.name}\* đã xoá nhánh  ${result?.project?.namespace}/${result?.project?.name}/${getBranchName(result?.ref)} \n`;
       }else{
