@@ -1,18 +1,15 @@
 
 const axios = require('axios');
 async function getTikTok(url) {
-   
+        
          var res = await axios
-        .post('https://www.tikwm.com/api/', {
-                url: url,
-                count: 12,
-                cursor: 0,
-                hd: 1
-        });
+        .get(`https://www.tikwm.com/api/?url=${url}`);
         if(res.status == 200){
             // test for status you want, etc
             console.log(res.status);
+            console.log(res.data)
             return res.data;
+            
         }    
        
 }
@@ -26,7 +23,7 @@ async function getTrending() {
    });
    if(res.status == 200){
        // test for status you want, etc
-       console.log(res.status);
+       console.log(res);
        return res.data;
    }    
   
