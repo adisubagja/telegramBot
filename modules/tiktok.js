@@ -3,7 +3,7 @@ const axios = require('axios');
 async function getTikTok(url) {
         
          var res = await axios
-        .get(`https://www.tikwm.com/api/?url=${url}`);
+        .get(`https://www.tikwm.com/api/?url=${encodeURI(url)}`);
         if(res.status == 200){
             // test for status you want, etc
             console.log(res.status);
