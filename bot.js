@@ -295,14 +295,17 @@ const Telegram = () => {
               var obj = Array.isArray(response) ? response[0] : response;
               var srcImg = obj['photo-url-1280'];
               var caption = obj['photo-caption'];
-              bot.sendPhoto(chatId, srcImg ?? "1");
+              bot.sendPhoto(chatId, srcImg ?? "1",{
+                parse_mode: "Markdown",
+                reply_to_message_id: messageId
+              });
         
-              if(caption != ""){
-                var result = convert(caption);
-                result =  result.replace("https://facebook.com/gaixinhchonloc",'');
-                result =  result.replace("#gaixinhchonloc",'');
-              bot.sendMessage(chatId, result);
-              }
+              // if(caption != ""){
+              //   var result = convert(caption);
+              //   result =  result.replace("https://facebook.com/gaixinhchonloc",'');
+              //   result =  result.replace("#gaixinhchonloc",'');
+              // bot.sendMessage(chatId, result);
+              // }
             }).catch(err => {
               bot.sendMessage(chatId, err ?? "1");
             });
