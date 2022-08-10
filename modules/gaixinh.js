@@ -1,13 +1,15 @@
 const { rejects } = require('assert');
 var http = require('https');
 const { resolve } = require('path');
-var number = Math.floor(Math.random() * 957);
-var url = "https://gaixinhchonloc.com/api/read/json?start="+number+"&num=1";
+
 
 module.exports = {
     data: () => {
         return new Promise((resolve,reject) => {
+            var number = Math.floor(Math.random() * 957);
+            var url = "https://gaixinhchonloc.com/api/read/json?start="+number+"&num=1";
             http.get(url,function(res){
+                console.log(url)
                 var body = "";
                 var object = [];
                 res.on('data', function(chunk){
