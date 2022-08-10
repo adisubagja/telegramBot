@@ -11,6 +11,7 @@ const getTikTok = require('./modules/tiktok');
 const weather = require('./modules/weather');
 const unixTime = require("./asset/unix_time");
 const { getBranchName } = require('./asset/removeString');
+const {convert} = require("html-to-text");
 const Telegram = () => {
     bot.onText(/^\. (.+)/, (msg, match) => {
         // 'msg' is the received Message from Telegram
@@ -291,19 +292,19 @@ const Telegram = () => {
               console.log("Group Name:" + msg.chat.title + "\n");
             }
              data.data().then(response => {
-              var obj = JSON.parse(response);
+              var obj = Array.isArray(response) ? response[0] : response;
               var srcImg = obj['photo-url-1280'];
-              // var caption = obj['photo-caption'];
-              bot.sendPhoto(chatId, srcImg);
+              var caption = obj['photo-caption'];
+              bot.sendPhoto(chatId, srcImg ?? "1");
         
-              // if(caption != ""){
-              //   var result = convert(caption);
-              // var result =  result.replace("https://facebook.com/gaixinhchonloc",'');
-              // var result =  result.replace("#gaixinhchonloc",'');
-              // bot.sendMessage(chatId, result);
-              // }
+              if(caption != ""){
+                var result = convert(caption);
+                result =  result.replace("https://facebook.com/gaixinhchonloc",'');
+                result =  result.replace("#gaixinhchonloc",'');
+              bot.sendMessage(chatId, result);
+              }
             }).catch(err => {
-              bot.sendMessage(chatId, err);
+              bot.sendMessage(chatId, err ?? "1");
             });
           }
           if (text.startsWith("/gitlab")) {
