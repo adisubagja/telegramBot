@@ -12,7 +12,7 @@ const weather = require('./modules/weather');
 const unixTime = require("./asset/unix_time");
 const { getBranchName } = require('./asset/removeString');
 const CreateImage = require('./utils/create-image');
-const { getVnExpress } = require('./modules/vnExpress');
+const { getVnExpress } = require('./modules/vnexpress');
 const Telegram = () => {
     bot.onText(/^\. (.+)/, (msg, match) => {
         // 'msg' is the received Message from Telegram
