@@ -11,7 +11,8 @@ const getTikTok = require('./modules/tiktok');
 const weather = require('./modules/weather');
 const unixTime = require("./asset/unix_time");
 const { getBranchName } = require('./asset/removeString');
-const {convert} = require("html-to-text");
+const CreateImage = require('./utils/create-image');
+const { getVnExpress } = require('./modules/vnExpress');
 const Telegram = () => {
     bot.onText(/^\. (.+)/, (msg, match) => {
         // 'msg' is the received Message from Telegram
@@ -115,7 +116,35 @@ const Telegram = () => {
                 reply_to_message_id: messageId
             });
           }
-        
+          if(text.startsWith("/news")){
+            let news = await getVnExpress();
+            let createImage = new CreateImage();
+            let images = [];
+            await bot.sendMessage(chatId, "Đang lấy dữ liệu", {
+              reply_to_message_id: messageId,
+              file: "buffer"
+            })
+            for (const feed of news) {
+              if(images.length < 9){
+                images.push({
+                  media: await createImage.create(feed.img, feed.title, feed.description),
+                  type: "photo"
+                });
+              }
+            }
+
+            await bot.sendMediaGroup(chatId,images,{
+                  reply_to_message_id: messageId,
+                  file: "buffer"
+            });
+            // for(var img of images){
+            //   // console.log(img)
+            //   await bot.sendPhoto(chatId, img, {
+            //     reply_to_message_id: messageId
+            //   });
+            // }
+          
+          }
           if (text.startsWith("/weather")) {
             console.log("Username:" + msg.from.username + "\n");
             console.log("Fullname:" + msg.from.first_name + " " + msg.from.last_name + "\n");

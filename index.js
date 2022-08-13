@@ -20,7 +20,7 @@ app.get('/', function (req, res) {
 })
 app.get('/list-group', db.getListGroup);
 app.post('/add-group', db.addGroup);
-app.listen(process.env.PORT || 3000);
+app.listen(process.env.PORT || 3002);
 
 app.get(webHookEndPoint, (req, res) => {
   const {url} = req;
@@ -61,7 +61,7 @@ app.post("/webhook/:id", async (req,res) => {
 // wakeup bot
 setInterval(function () {
   http.get("http://bot.huuhieu.name.vn/");
-}, 3000); // every 5 minutes (300000)
+}, 3002); // every 5 minutes (300000)
 
 Telegram.Telegram();
     
