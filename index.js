@@ -59,10 +59,6 @@ app.post("/webhook/:id", async (req,res) => {
   Telegram.gitLabMessage(result,id);
 })
 // wakeup bot
-setInterval(function () {
-  http.get("http://bot.huuhieu.name.vn/");
-}, 3002); // every 5 minutes (300000)
-
 Telegram.Telegram();
     
 
