@@ -464,6 +464,9 @@ const gitLabMessage = (result,id) => {
             
         })
       }
+      if(messageContent === ""){
+       return;
+      }
       bot.sendMessage(id,messageContent, {
         parse_mode: "Markdown"
       });
@@ -499,6 +502,9 @@ const gitLabMessage = (result,id) => {
         messageContent+= `\n\n🔗 \t  [${result?.project?.urls?.repository}/-/pipelines/${result?.id}](${result?.project?.urls?.repository}/-/pipelines/${result?.id})`
         messageContent+= `\n\n📄 \t  *** ${result?.commit?.author?.name} : \*\*\* [${result?.commit?.message}](${result?.commit?.url}) `
       }
+      if(messageContent === ""){
+        return;
+       }
       bot.sendMessage(id,messageContent, {
         parse_mode: "Markdown"
       });
