@@ -58,6 +58,7 @@ app.post("/webhook/:id", async (req,res) => {
   const {body} = req;
   let result = gitlab.transformGitLabEvent(body);
   Telegram.gitLabMessage(result,id);
+  res.send("ok")
 })
 // wakeup bot
 Telegram.Telegram();
