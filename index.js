@@ -26,6 +26,7 @@ app.get(webHookEndPoint, (req, res) => {
   const {url} = req;
   console.log("Received Webhook Request");
   console.log("Full url:" + url)
+  res.send("OK")
 })
 
 app.post(webHookEndPoint,(req,res) => {
@@ -40,6 +41,7 @@ app.put(webHookEndPoint,(req,res) => {
   console.log("Received Webhook PUT Request");
   console.log("Request body:");
   console.log(body);
+  res.send("OK")
 })
 
 app.delete(webHookEndPoint,(req,res) => {
@@ -47,15 +49,14 @@ app.delete(webHookEndPoint,(req,res) => {
   console.log("Received Webhook DELETE Request");
   console.log("Url:");
   console.log(url);
+  res.send("OK")
 })
 
 // gitlab webhook
 app.post("/webhook/:id", async (req,res) => {
   const {id} = req.params;
   const {body} = req;
-  console.log(body)
   let result = gitlab.transformGitLabEvent(body);
-  console.log(result);
   Telegram.gitLabMessage(result,id);
 })
 // wakeup bot
