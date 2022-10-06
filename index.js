@@ -61,6 +61,9 @@ app.post("/webhook/:id", async (req,res) => {
   res.send("ok")
 })
 // wakeup bot
+setInterval(function () {
+  http.get("https://bot.huuhieu.name.vn");
+}, 900000); 
 Telegram.Telegram();
     
 
