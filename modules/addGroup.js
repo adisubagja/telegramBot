@@ -19,15 +19,20 @@ module.exports = {
                   'Content-Length': data.length
                 }
               }
-              
+              const body = []
               const req = https.request(options, res => {
                 res.on('data', d => {
                   process.stdout.write(d)
                 })
               })
-              
+              res.on('end', () => {
+                
+                const resString = Buffer.concat(body).toString()
+                resolve(resString)
+              })
               req.on('error', error => {
                 console.error(error)
+                reject(error)
               })
               
               req.write(data)

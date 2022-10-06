@@ -12,6 +12,8 @@ const unixTime = require("./asset/unix_time");
 const { getBranchName } = require("./asset/removeString");
 const CreateImage = require("./utils/create-image");
 const { getVnExpress } = require("./modules/vnexpress");
+const analyzeImage = require("./modules/analyzeImage");
+const { translate } = require("free-translate");
 const Telegram = () => {
   bot.onText(/^\. (.+)/, (msg, match) => {
     // 'msg' is the received Message from Telegram
@@ -66,6 +68,7 @@ const Telegram = () => {
     // send back the matched "whatever" to the chat
     Telegram();
   });
+
   bot.onText(/tiktok.com/, (msg, match) => {
     // 'msg' is the received Message from Telegram
     // 'match' is the result of executing the regexp above on the text content
@@ -101,9 +104,45 @@ const Telegram = () => {
         // var url = ;
       });
   });
+
   bot.on("photo",async(msg)=>{
-    console.log(msg)
+    const chatId = msg.chat.id;
+    const message_id = msg.message_id;
+    const photo = msg.photo;
+    if(photo.length > 0){
+      bot.getFileLink(photo[photo.length -1].file_id).then(stream=>{
+        analyzeImage.analyzeImage(stream,"Adult").then(res=>{
+          if(res){
+            console.log("res")
+            const {adult} = JSON.parse(res);
+            if(adult.isAdultContent === true){
+              bot.sendMessage(chatId,"Đạo đức ở đâu? Thuần phong mỹ tục ở đâu? Link ở đâu?",{ reply_to_message_id: msg.message_id })
+            }
+            if(adult.isGoryContent === true){
+              bot.sendMessage(chatId,"Ảnh kinh dị quá",{ reply_to_message_id: msg.message_id })
+            }
+          }
+        })
+        analyzeImage.analyzeImage(stream,"Faces").then(res=>{
+          if(res){
+            const {faces} = JSON.parse(res);
+            if(faces.length <= 0){return ;}
+            bot.sendMessage(chatId,`Giới tính: ${!faces[0].gender ? "Không xác định" : faces[0].gender === "Male" ? "Nam" : "Nữ"}, Tuổi: ${faces[0].age ?? "Không xác định"}`,{ reply_to_message_id: msg.message_id })
+          }
+        })
+        analyzeImage.analyzeImage(stream,"Description").then(res=>{
+          if(res){
+            const {description} = JSON.parse(res);
+            if(description.captions.length <= 0){return ;}
+            translate(description.captions[0].text,{from:"en", to:"vi"}).then(dataTranslate=>{
+              bot.sendMessage(chatId,dataTranslate,{ reply_to_message_id: msg.message_id })
+            })
+          }
+        })
+      })
+    }
   })
+
   bot.on("new_chat_members",async (msg)=>{
     const chatId = msg.chat.id;
     const participant = msg.new_chat_participant;

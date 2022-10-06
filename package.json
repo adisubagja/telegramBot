@@ -11,6 +11,7 @@
     "cron": "^1.8.2",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "free-translate": "^0.6.1",
     "fs": "0.0.1-security",
     "html-to-text": "^8.1.0",
     "node-fetch": "^3.2.10",
