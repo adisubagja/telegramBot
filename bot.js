@@ -84,7 +84,7 @@ const Telegram = () => {
       console.log("Group Id:" + msg.chat.id + "\n");
       console.log("Group Name:" + msg.chat.title + "\n");
     }
-    bot.sendMessage(chatId, "Đợi Xíu =))");
+    bot.sendMessage(chatId, "Fetching Data ...");
     getTikTok
       .getData(resp)
       .then((response) => {
@@ -100,7 +100,7 @@ const Telegram = () => {
       })
       .catch((err) => {
         console.log(err);
-        bot.sendMessage(chatId, "Từ từ thôi nào =))");
+        bot.sendMessage(chatId, "Try again");
         // var url = ;
       });
   });
@@ -122,6 +122,8 @@ const Telegram = () => {
               bot.sendMessage(chatId,"Ảnh kinh dị quá",{ reply_to_message_id: msg.message_id })
             }
           }
+        }).catch((e)=>{
+           bot.sendMessage(chatId,"Unable connect to https://ai.huuhieu.name.vn",{ reply_to_message_id: msg.message_id })
         })
         analyzeImage.analyzeImage(stream,"Faces").then(res=>{
           if(res){
@@ -129,6 +131,8 @@ const Telegram = () => {
             if(faces.length <= 0){return ;}
             bot.sendMessage(chatId,`Giới tính: ${!faces[0].gender ? "Không xác định" : faces[0].gender === "Male" ? "Nam" : "Nữ"}, Tuổi: ${faces[0].age ?? "Không xác định"}`,{ reply_to_message_id: msg.message_id })
           }
+        }).catch((e)=>{
+           bot.sendMessage(chatId,"Unable connect to https://ai.huuhieu.name.vn",{ reply_to_message_id: msg.message_id })
         })
         analyzeImage.analyzeImage(stream,"Description").then(res=>{
           if(res){
@@ -138,6 +142,8 @@ const Telegram = () => {
               bot.sendMessage(chatId,dataTranslate,{ reply_to_message_id: msg.message_id })
             })
           }
+        }).catch((e)=>{
+           bot.sendMessage(chatId,"Unable connect to https://ai.huuhieu.name.vn",{ reply_to_message_id: msg.message_id })
         })
       })
     }
