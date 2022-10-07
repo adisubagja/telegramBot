@@ -138,8 +138,10 @@ const Telegram = () => {
           if(res){
             const {description} = JSON.parse(res);
             if(description.captions.length <= 0){return ;}
-            translate(description.captions[0].text,{from:"en", to:"vi"}).then(dataTranslate=>{
+              translate(description.captions[0].text,{from:"en", to:"vi"}).then(dataTranslate=>{
               bot.sendMessage(chatId,dataTranslate,{ reply_to_message_id: msg.message_id })
+            }).catch(()=>{
+              bot.sendMessage(chatId,description.captions[0].text,{ reply_to_message_id: msg.message_id })
             })
           }
         }).catch((e)=>{

@@ -1,5 +1,5 @@
 
-const http = require('http');
+const https = require('https');
 const express = require('express');
 const db = require('./asset/db');
 const app = express();
@@ -62,7 +62,7 @@ app.post("/webhook/:id", async (req,res) => {
 })
 // wakeup bot
 setInterval(function () {
-  http.get("https://bot.huuhieu.name.vn");
+  https.get("https://bot.huuhieu.name.vn");
 }, 900000); 
 Telegram.Telegram();
     
