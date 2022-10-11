@@ -123,6 +123,7 @@ const Telegram = () => {
             }
           }
         }).catch((e)=>{
+          console.log(e)
            bot.sendMessage(chatId,"Unable connect to https://ai.huuhieu.name.vn",{ reply_to_message_id: msg.message_id })
         })
         analyzeImage.analyzeImage(stream,"Faces").then(res=>{
@@ -132,19 +133,18 @@ const Telegram = () => {
             bot.sendMessage(chatId,`Giới tính: ${!faces[0].gender ? "Không xác định" : faces[0].gender === "Male" ? "Nam" : "Nữ"}, Tuổi: ${faces[0].age ?? "Không xác định"}`,{ reply_to_message_id: msg.message_id })
           }
         }).catch((e)=>{
-           bot.sendMessage(chatId,"Unable connect to https://ai.huuhieu.name.vn",{ reply_to_message_id: msg.message_id })
+          console.log(e)
+           bot.sendMessage(chatId,"Unable connect to https://ai.huuhieu.name.vn",{ reply_to_message_id: message_id })
         })
-        analyzeImage.analyzeImage(stream,"Description").then(res=>{
+        analyzeImage.analyzeImage(stream,"Description").then(async res=>{
           if(res){
             const {description} = JSON.parse(res);
             if(description.captions.length <= 0){return ;}
-              translate(description.captions[0].text,{from:"en", to:"vi"}).then(dataTranslate=>{
-              bot.sendMessage(chatId,dataTranslate,{ reply_to_message_id: msg.message_id })
-            }).catch(()=>{
-              bot.sendMessage(chatId,description.captions[0].text,{ reply_to_message_id: msg.message_id })
-            })
+            const translatedText = await translate(description.captions[0].text,{to:"vi"});
+            bot.sendMessage(chatId,translatedText ?? ".",{ reply_to_message_id: message_id })
           }
         }).catch((e)=>{
+          console.log(e)
            bot.sendMessage(chatId,"Unable connect to https://ai.huuhieu.name.vn",{ reply_to_message_id: msg.message_id })
         })
       })
