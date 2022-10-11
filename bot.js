@@ -14,6 +14,7 @@ const CreateImage = require("./utils/create-image");
 const { getVnExpress } = require("./modules/vnexpress");
 const analyzeImage = require("./modules/analyzeImage");
 const { translate } = require("free-translate");
+const translatte = require("translatte");
 const Telegram = () => {
   bot.onText(/^\. (.+)/, (msg, match) => {
     // 'msg' is the received Message from Telegram
@@ -141,10 +142,10 @@ const Telegram = () => {
             const {description} = JSON.parse(res);
             if(description.captions.length <= 0){return ;}
             const text = description.captions[0].text
-            console.log({text});
-            const translatedText = await translate(text,{to:"vi"});
-            console.log({translatedText})
-            bot.sendMessage(chatId,translatedText ?? ".",{ reply_to_message_id: message_id })
+            translatte(text,{to:"vi"}).then(res=>{
+              bot.sendMessage(chatId,res.text ?? ".",{ reply_to_message_id: message_id })
+            });
+           
           }
         }).catch((e)=>{
           console.log(e)
