@@ -140,7 +140,10 @@ const Telegram = () => {
           if(res){
             const {description} = JSON.parse(res);
             if(description.captions.length <= 0){return ;}
-            const translatedText = await translate(description.captions[0].text,{to:"vi"});
+            const text = description.captions[0].text
+            console.log({text});
+            const translatedText = await translate(text,{to:"vi"});
+            console.log({translatedText})
             bot.sendMessage(chatId,translatedText ?? ".",{ reply_to_message_id: message_id })
           }
         }).catch((e)=>{
