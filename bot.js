@@ -124,8 +124,6 @@ const Telegram = () => {
             }
           }
         }).catch((e)=>{
-          console.log(e)
-           bot.sendMessage(chatId,"Unable connect to https://ai.huuhieu.name.vn",{ reply_to_message_id: msg.message_id })
         })
         analyzeImage.analyzeImage(stream,"Faces").then(res=>{
           if(res){
@@ -135,7 +133,6 @@ const Telegram = () => {
           }
         }).catch((e)=>{
           console.log(e)
-           bot.sendMessage(chatId,"Unable connect to https://ai.huuhieu.name.vn",{ reply_to_message_id: message_id })
         })
         analyzeImage.analyzeImage(stream,"Description").then(async res=>{
           if(res){
@@ -149,7 +146,6 @@ const Telegram = () => {
           }
         }).catch((e)=>{
           console.log(e)
-           bot.sendMessage(chatId,"Unable connect to https://ai.huuhieu.name.vn",{ reply_to_message_id: msg.message_id })
         })
       })
     }
